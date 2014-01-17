@@ -1,4 +1,6 @@
-Cookie2D
+<p align="center">
+<img src="https://raw2.github.com/eatenbrain/Cookie2D/master/Cookie2D/bin/Content/textures/gui/logo.png"/>
+</p>
 ===============
 Official site is [Indie Armory](http://indiearmory.com).
 
