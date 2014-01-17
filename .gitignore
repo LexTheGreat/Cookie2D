@@ -1,34 +1,4 @@
 #################
-## Eclipse
-#################
-
-*.pydevproject
-.project
-.metadata
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# CDT-specific
-.cproject
-
-# PDT-specific
-.buildpath
-
-
-#################
 ## Visual Studio
 #################
 
@@ -39,14 +9,16 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+*.lastcodeanalysissucceeded
+*.CodeAnalysisLog.xml
 
 # Build results
 
 [Dd]ebug/
 [Rr]elease/
 x64/
+x86/
 build/
-[Bb]in/
 [Oo]bj/
 
 # MSTest test Results
@@ -164,9 +136,9 @@ UpgradeLog*.htm
 App_Data/*.mdf
 App_Data/*.ldf
 
-#############
+####################
 ## Windows detritus
-#############
+####################
 
 # Windows image file caches
 Thumbs.db
@@ -181,34 +153,7 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
-
-#############
-## Python
-#############
-
-*.py[co]
-
-# Packages
-*.egg
-*.egg-info
-dist/
-build/
-eggs/
-parts/
-var/
-sdist/
-develop-eggs/
-.installed.cfg
-
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.tox
-
-#Translations
-*.mo
-
-#Mr Developer
-.mr.developer.cfg
+###########
+## Dropbox
+###########
+.dropbox
