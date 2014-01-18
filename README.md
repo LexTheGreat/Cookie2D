@@ -32,3 +32,9 @@ Oryx.
 
 #### Graphics library
 Laurent Gomila
+
+#### GUI library
+Garry Newman, omeg
+
+#### Miscellaneous utillities
+krzat (SFML.Utils), zsbzsb (NetExt and Spitfire)
