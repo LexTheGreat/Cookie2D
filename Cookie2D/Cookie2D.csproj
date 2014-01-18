@@ -9,7 +9,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cookie2D</RootNamespace>
     <AssemblyName>Cookie2D</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -48,64 +47,53 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Gwen">
-      <HintPath>lib\Gwen.dll</HintPath>
+      <HintPath>extlibs\Gwen.dll</HintPath>
     </Reference>
     <Reference Include="Gwen.Renderer.SFML">
-      <HintPath>lib\Gwen.Renderer.SFML.dll</HintPath>
+      <HintPath>extlibs\Gwen.Renderer.SFML.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-audio-2">
-      <HintPath>lib\sfmlnet-audio-2.dll</HintPath>
+      <HintPath>extlibs\sfmlnet-audio-2.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-graphics-2">
-      <HintPath>lib\sfmlnet-graphics-2.dll</HintPath>
+      <HintPath>extlibs\sfmlnet-graphics-2.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-window-2">
-      <HintPath>lib\sfmlnet-window-2.dll</HintPath>
+      <HintPath>extlibs\sfmlnet-window-2.dll</HintPath>
     </Reference>
     <Reference Include="Tao.OpenGl">
-      <HintPath>lib\Tao.OpenGl.dll</HintPath>
+      <HintPath>extlibs\Tao.OpenGl.dll</HintPath>
     </Reference>
     <Reference Include="NetEXT">
-      <HintPath>lib\NetEXT.dll</HintPath>
+      <HintPath>extlibs\NetEXT.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Controller.cs" />
-    <Compile Include="Application\GameSettings.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Graphics\Console.cs" />
-    <Compile Include="Graphics\MapRenderer.cs" />
-    <Compile Include="Graphics\SpriteBatch.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\FloatMath.cs" />
-    <Compile Include="Content\ContentManager.cs" />
-    <Compile Include="Content\ContentProvider.cs" />
-    <Compile Include="Content\GuiManager.cs" />
-    <Compile Include="Content\SceneManager.cs" />
-    <Compile Include="Content\ScreenProvider.cs" />
+    <Compile Include="MenuScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="extlibs\csfml-audio-2.dll" />
+    <None Include="extlibs\csfml-graphics-2.dll" />
+    <None Include="extlibs\csfml-window-2.dll" />
+    <None Include="extlibs\Gwen.dll" />
+    <None Include="extlibs\Gwen.Renderer.SFML.dll" />
+    <None Include="extlibs\libsndfile-1.dll" />
+    <None Include="extlibs\NetEXT.dll" />
+    <None Include="extlibs\openal32.dll" />
+    <None Include="extlibs\sfmlnet-audio-2.dll" />
+    <None Include="extlibs\sfmlnet-graphics-2.dll" />
+    <None Include="extlibs\sfmlnet-window-2.dll" />
+    <None Include="extlibs\Tao.OpenGl.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cookie2d.ico" />
     <Content Include="icon.ico" />
-    <Content Include="lib\csfml-audio-2.dll" />
-    <Content Include="lib\csfml-graphics-2.dll" />
-    <Content Include="lib\csfml-window-2.dll" />
-    <Content Include="lib\Gwen.dll" />
-    <Content Include="lib\Gwen.Renderer.SFML.dll" />
-    <Content Include="lib\libsndfile-1.dll" />
-    <Content Include="lib\openal32.dll" />
-    <Content Include="lib\sfmlnet-audio-2.dll" />
-    <Content Include="lib\sfmlnet-graphics-2.dll" />
-    <Content Include="lib\sfmlnet-window-2.dll" />
-    <Content Include="lib\Tao.OpenGl.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Exec Command="copy /Y &quot;$(ProjectDir)lib\*.dll&quot; &quot;$(ProjectDir)$(OutDir)&quot;" />
+    <Exec Command="copy /Y &quot;$(ProjectDir)extlibs\*.dll&quot; &quot;$(ProjectDir)$(OutDir)&quot;" />
   </Target>
   <Target Name="AfterClean">
     <Exec Command="del /Q &quot;$(ProjectDir)$(OutDir)*.*&quot;" />
@@ -114,4 +102,13 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CookieLib\CookieLib.csproj">
+      <Project>{CFA1A620-238E-4917-9831-B19B7F2C23B4}</Project>
+      <Name>CookieLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="extlibs\" />
+  </ItemGroup>
 </Project>
