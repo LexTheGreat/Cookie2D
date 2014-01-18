@@ -1,4 +1,10 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using SFML.Window;
+using SFML.Graphics;
+using Tao.OpenGl;
+using Gwen.Control;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,48 +15,100 @@ using Tao.OpenGl;
 using Gwen.Control;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
 using MessageBox = System.Windows.Forms.MessageBox;
+using Cookie2D.Graphics;
 
 namespace Cookie2D
 {
     public abstract class Controller
-    {
-        public View Camera { get; private set; }
-        public RenderWindow Window { get; private set; }
-        public Color ClearColor = Color.Black;
-        public Canvas GUI { get; private set; }
-        protected Gwen.Input.SFML _input;
-        private bool _stoploop = false;
+	{
+		#region Definitions
+		private RenderWindow _gamewindow = null;
+		private Canvas _gamegui = null;
+		private Gwen.Input.SFML _input = null;
+		private SpriteBatch _spritebatch = null;
+		private Color _clearcolor = Color.Black;
+		private bool _stop = false;
+		#endregion
+
+		public RenderWindow GameWindow
+		{
+			get
+			{
+				return _gamewindow;
+			}
+		}
+
+		public Canvas GameGUI
+		{
+			get
+			{
+				return _gamegui;
+			}
+		}
+
+		public SpriteBatch spriteBatch
+		{
+			get
+			{
+				return _spritebatch;
+			}
+		}
+
+		public Gwen.Input.SFML GameInput
+		{
+			get
+			{
+				return _input;
+			}
+		}
+
+		public Color ClearColor
+		{
+			get
+			{
+				return _clearcolor;
+			}
+
+			set
+			{
+				_clearcolor = value;
+			}
+		}
 
         public bool Stop
         {
             get
             {
-                return _stoploop;
+				return _stop;
             }
             set
             {
-                _stoploop = value;
+				_stop = value;
             }
         }
 
         public void Run(GameSettings settings = null)
         {
+			//Initialize game settings
             if(settings == null) settings = new GameSettings();
-            Window = settings.Create();
+			_gamewindow = settings.Create();
+
+			//Create sprite batch
+			_spritebatch = new SpriteBatch();
 
             // Setup event handlers
-            Window.Closed += window_Closed;
-            Window.KeyPressed += window_KeyPressed;
-            Window.Resized += window_Resized;
-            Window.KeyReleased += window_KeyReleased;
-            Window.MouseButtonPressed += window_MouseButtonPressed;
-            Window.MouseButtonReleased += window_MouseButtonReleased;
-            Window.MouseWheelMoved += window_MouseWheelMoved;
-            Window.MouseMoved += window_MouseMoved;
-            Window.TextEntered += window_TextEntered;
+			_gamewindow.Closed += window_Closed;
+			_gamewindow.KeyPressed += window_KeyPressed;
+			_gamewindow.Resized += window_Resized;
+			_gamewindow.KeyReleased += window_KeyReleased;
+			_gamewindow.MouseButtonPressed += window_MouseButtonPressed;
+			_gamewindow.MouseButtonReleased += window_MouseButtonReleased;
+			_gamewindow.MouseWheelMoved += window_MouseWheelMoved;
+			_gamewindow.MouseMoved += window_MouseMoved;
+			_gamewindow.TextEntered += window_TextEntered;
 
             // create GWEN renderer
-            Gwen.Renderer.SFML gwenRenderer = new Gwen.Renderer.SFML(Window);
+			Gwen.Renderer.SFML gwenRenderer = new Gwen.Renderer.SFML(_gamewindow);
 
             // Create GWEN skin
             //Skin.Simple skin = new Skin.Simple(GwenRenderer);
@@ -63,132 +121,104 @@ namespace Cookie2D
             defaultFont.Dispose(); // skin has its own
 
             // Create a Canvas (it's root, on which all other GWEN controls are created)
-            GUI = new Canvas(skin);
-            GUI.SetSize((int)settings.Width, (int)settings.Height);
-            GUI.ShouldDrawBackground = false;
-            GUI.KeyboardInputEnabled = true;
+			_gamegui = new Canvas(skin);
+			_gamegui.SetSize((int)settings.Width, (int)settings.Height);
+			_gamegui.ShouldDrawBackground = false;
+			_gamegui.KeyboardInputEnabled = true;
 
             // Create GWEN input processor
             _input = new Gwen.Input.SFML();
-            _input.Initialize(GUI, Window);
-
-            Camera = new View(Window.DefaultView);
+			_input.Initialize(_gamegui, _gamewindow);
 
             var watch = Stopwatch.StartNew();
 
-            Initialize();
-            while (Window.IsOpen() && !_stoploop)
+			ScreenActivated();
+			while (_gamewindow.IsOpen() && !_stop)
             {
                 var time = (uint)watch.Elapsed.TotalMilliseconds;
 
                 Update(time);
 
-                Window.Clear(ClearColor);
-                Window.SetView(Camera);
+				_gamewindow.DispatchEvents();
+				_gamewindow.Clear(ClearColor);
                 // Clear depth buffer
                 Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
 
-                Draw(time);
-                GUI.RenderCanvas();
+				Draw(_gamewindow);
+				_gamegui.RenderCanvas();
 
-                Window.Display();
-                Window.DispatchEvents();
+				_gamewindow.Display();
             }
-            Unload();
+			ScreenDeactivated();
 
         }
 
-        /// <summary>
-        /// Function called when the window is closed
-        /// </summary>
-        void window_Closed(object sender, EventArgs e)
+		public void window_Closed(object sender, EventArgs e)
         {
-            Window.Close();
+			_gamewindow.Close();
         }
-
-        /// <summary>
-        /// Function called when a key is pressed
-        /// </summary>
-        void window_KeyPressed(object sender, KeyEventArgs e)
+		
+		public void window_Resized(object sender, SizeEventArgs e)
         {
-            if (e.Code == Keyboard.Key.Escape)
-                Window.Close();
-            
-            _input.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, true));
-            OnKeyPressed(sender,e);
+			_gamewindow.Size = new Vector2u((uint)e.Width, (uint)e.Height);
+			_gamegui.SetSize((int)e.Width, (int)e.Height);
         }
 
-        void window_Resized(object sender, SizeEventArgs e)
-        {
-            var size = new Vector2f(e.Width, e.Height);
-            var cam = Camera.Size;
-
-            var rX = cam.X/size.X;
-            var rY = cam.Y/size.Y;
-
-            cam = Math.Max(rX, rY) * size;
-
-            Camera.Size = cam;
-            Window.DefaultView.Size = size;
-            Window.DefaultView.Center = size / 2;
-            GUI.SetSize((int)e.Width, (int)e.Height);
-            OnResized(sender, e);
-        }
-
-        void window_TextEntered(object sender, TextEventArgs e)
+		public void window_TextEntered(object sender, TextEventArgs e)
         {
             _input.ProcessMessage(e);
         }
 
-        void window_MouseMoved(object sender, MouseMoveEventArgs e)
+		public void window_MouseWheelMoved(object sender, MouseWheelEventArgs e)
         {
             _input.ProcessMessage(e);
         }
 
-        void window_MouseWheelMoved(object sender, MouseWheelEventArgs e)
-        {
-            _input.ProcessMessage(e);
-        }
+		public void window_MouseMoved(object sender, MouseMoveEventArgs e)
+		{
+			_input.ProcessMessage(e);
+			MouseMoved(sender, e);
+		}
 
-        void window_MouseButtonPressed(object sender, MouseButtonEventArgs e)
+		public void window_MouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             _input.ProcessMessage(new Gwen.Input.SFMLMouseButtonEventArgs(e, true));
+			MouseButtonPressed(sender, e);
         }
 
-        void window_MouseButtonReleased(object sender, MouseButtonEventArgs e)
+		public void window_MouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             _input.ProcessMessage(new Gwen.Input.SFMLMouseButtonEventArgs(e, false));
+			MouseButtonReleased(sender, e);
         }
 
-        void window_KeyReleased(object sender, KeyEventArgs e)
+		public void window_KeyPressed(object sender, KeyEventArgs e)
+		{
+			if (e.Code == Keyboard.Key.Escape)
+				_gamewindow.Close();
+
+			_input.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, true));
+			KeyPressed(sender,e);
+		}
+
+		public void window_KeyReleased(object sender, KeyEventArgs e)
         {
-            _input.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, false));
-            OnKeyReleased(sender, e);
+			_input.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, false));
+            KeyReleased(sender, e);
         }
 
-        protected abstract void Initialize();
-
-        protected abstract void Draw(float dT);
-
-        protected virtual void Update(float dT)
-        {
-        }
-
-        protected virtual void Unload()
-        {
-        }
+		#region Functions
+		protected abstract void Draw(RenderTarget Target);
+		protected virtual void ScreenActivated() { }
+		protected virtual void ScreenDeactivated() { }
+		protected virtual void Update(float dT) { }
 
         // Input Bindings
-        protected virtual void OnKeyPressed(object sender, KeyEventArgs e)
-        {
-        }
-
-        protected virtual void OnResized(object sender, SizeEventArgs e)
-        {
-        }
-
-        protected virtual void OnKeyReleased(object sender, KeyEventArgs e)
-        {
-        }
-    }
+		protected virtual void KeyPressed(object sender, KeyEventArgs EventArgs) { }
+		protected virtual void KeyReleased(object sender, KeyEventArgs EventArgs) { }
+		protected virtual void MouseButtonPressed(object sender, MouseButtonEventArgs EventArgs) { }
+		protected virtual void MouseButtonReleased(object sender, MouseButtonEventArgs EventArgs) { }
+		protected virtual void MouseMoved(object sender, MouseMoveEventArgs EventArgs) { }
+		#endregion
+	}
 }

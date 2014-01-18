@@ -16,58 +16,57 @@ namespace Cookie2D
     public class Game: Controller
     {
         protected Windows.Console _console;
-        protected SpriteBatch spriteBatch;
+        
 
-        protected override void Initialize()
+		protected override void ScreenActivated()
         {
-            spriteBatch = new SpriteBatch();
-            WindowControl lwnd = new WindowControl(GUI, "Login");
+			WindowControl lwnd = new WindowControl(GameGUI, "Login");
             lwnd.SetSize(400, 300);
             lwnd.SetPosition(200, 200);
             lwnd.DisableResizing();
             lwnd.Close();
             GuiManager.Set<WindowControl>("loginwindow", lwnd);
 
-            Button btnLogin = new Button(GUI);
+			Button btnLogin = new Button(GameGUI);
             btnLogin.Text = "Login";
             btnLogin.SetPosition(245, 550);
             btnLogin.SetSize(100, 40);
             btnLogin.SetImage("Content/textures/gui/buttons/login.png");
             btnLogin.Clicked += btnLogin_Clicked;
 
-            Button btnReg = new Button(GUI);
+			Button btnReg = new Button(GameGUI);
             btnReg.Text = "Register";
             btnReg.SetPosition(btnLogin.X + btnLogin.Width + 5, btnLogin.Y);
             btnReg.SetSize(btnLogin.Width, btnLogin.Height);
             btnReg.SetImage("Content/textures/gui/buttons/register.png");
             
-            Button btnCredits = new Button(GUI);
+			Button btnCredits = new Button(GameGUI);
             btnCredits.Text = "Credits";
             btnCredits.SetPosition(btnReg.X + btnReg.Width + 5, btnLogin.Y);
             btnCredits.SetSize(btnLogin.Width, btnLogin.Height);
             btnCredits.SetImage("Content/textures/gui/buttons/credits.png");
 
-            _console = new Windows.Console(GUI);
+			_console = new Windows.Console(GameGUI);
         }
 
-        protected override void Draw(float dT)
+		protected override void Draw(RenderTarget Target)
         {
-            spriteBatch.Begin();
+			spriteBatch.Begin();
             spriteBatch.Draw(ContentManager.Load<Texture>("gui/background"), new FloatRect(0, 0, 800, 600), new Color(255, 255, 255));
             spriteBatch.Draw(ContentManager.Load<Texture>("gui/overlay"), new FloatRect(0, 0, 800, 600), new Color(255, 255, 255));
             spriteBatch.Draw(ContentManager.Load<Texture>("gui/logo"), new Vector2f(160, 200), new Color(255, 255, 255));
             spriteBatch.End();
-            spriteBatch.Draw(Window, RenderStates.Default);
+			spriteBatch.Draw(Target, RenderStates.Default);
         }
 
-        protected override void OnKeyPressed(object sender, KeyEventArgs e)
+		protected override void KeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Code == Keyboard.Key.LControl)
                 _console.IsHidden = !_console.IsHidden;
 
             if (e.Code == Keyboard.Key.F12)
             {
-                Image img = Window.Capture();
+				Image img = GameWindow.Capture();
                 if (img.Pixels == null)
                 {
                     _console.PrintText("Failed to capture window");
