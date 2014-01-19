@@ -89,6 +89,15 @@ namespace CookieLib.Interface
 			//Initialize console window
 			console = new Windows.Console(_gamegui);
 		}
+
+		public void DisposeGUI()
+		{
+			_gamegui.Dispose ();
+			_gamegui = null;
+			_ginput = null;
+			console.Dispose();
+			console = null;
+		}
 		#endregion
 
 		public void window_TextEntered(RenderWindow sender, TextEventArgs e)
@@ -122,6 +131,8 @@ namespace CookieLib.Interface
 		public void window_KeyPressed(RenderWindow sender, KeyEventArgs e)
 		{
 			_ginput.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, true));
+			if (e.Code == Keyboard.Key.LControl)
+				console.IsHidden = !console.IsHidden;
 			KeyPressed(sender,e);
 		}
 

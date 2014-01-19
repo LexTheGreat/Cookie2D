@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using SFML.Graphics;
 using SFML.Window;
-using SFML.Utils;
 using CookieLib;
 using CookieLib.Interface;
 using NetEXT.TimeFunctions;
+using Cookie2D.Screens;
+using Cookie2D.World;
 
 namespace Cookie2D
 {
@@ -14,8 +16,7 @@ namespace Cookie2D
     {
         public const int screenX = 800;
         public const int screenY = 600;
-		private static ScreenManager _screenmng;
-		private static ScreenProvider _menu;
+		public static ScreenManager _screenmng;
 
         /// <summary>
         /// The main entry point for the application.
@@ -30,16 +31,13 @@ namespace Cookie2D
             _gameSettings.Title = "Cookie2D";
             _gameSettings.FramerateLimit = 64;
             _gameSettings.Style = Styles.Close;
-
-            /// Initialize SFML window
-			/// _game = new Cookie2D.Game();
-			/// _game.ClearColor = new Color(100, 149, 237);
-			/// _game.Run(_gameSettings);
+			_gameSettings.Icon = new FileStream ("icon.ico", FileMode.Open);
 			
-			_screenmng = new ScreenManager (_gameSettings,
+			_screenmng = new ScreenManager (
+				_gameSettings,
 				new MenuScreen(new Vector2i(screenX, screenY),
 					 "Content/textures/GUI/DefaultSkin.png"), 
-				Time.Zero);
+				Time.FromMilliseconds(20));
 			_screenmng.RunLoop();
         } 
     }

@@ -89,16 +89,19 @@ namespace CookieLib.Interface
 		private void OnSwitchScreen(ScreenProvider NewScreenManager)
 		{
 			if (_screenmanagerstack.Contains(NewScreenManager)) return;
+			_screenmanagerstack[_screenmanagerstack.Count - 1].DisposeGUI ();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenDeactivated();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen -= OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen -= OnCloseScreen;
 			_screenmanagerstack.Add(NewScreenManager);
+			_screenmanagerstack[_screenmanagerstack.Count - 1].InitializeGUI (_gamewindow);
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 		}
 		private void OnCloseScreen()
 		{
+			_screenmanagerstack[_screenmanagerstack.Count - 1].DisposeGUI();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenDeactivated();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen -= OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen -= OnCloseScreen;
@@ -106,6 +109,7 @@ namespace CookieLib.Interface
 			if (_screenmanagerstack.Count <= 0) _gamewindow.Close();
 			else
 			{
+				_screenmanagerstack[_screenmanagerstack.Count - 1].InitializeGUI (_gamewindow);
 				_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 				_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
 				_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
@@ -121,11 +125,11 @@ namespace CookieLib.Interface
 				_gamewindow.Clear(_clearcolor);
 				// Clear depth buffer
 				Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
-				//while (elapsedtime >= TimeStep)
-				//{
-				//	elapsedtime -= TimeStep;
-				//	_screenmanagerstack[_screenmanagerstack.Count - 1].Update(TimeStep);
-				//}
+				while (elapsedtime >= TimeStep)
+				{
+					elapsedtime -= TimeStep;
+					_screenmanagerstack[_screenmanagerstack.Count - 1].Update(TimeStep);
+				}
 				if (_screenmanagerstack.Count >= 1) 
 				{
 					_screenmanagerstack[_screenmanagerstack.Count - 1].Draw(_gamewindow);

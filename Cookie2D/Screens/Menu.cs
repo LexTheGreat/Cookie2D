@@ -1,18 +1,21 @@
 using System;
-using CookieLib.Interface;
+using Gwen.Control;
 using SFML.Window;
 using SFML.Graphics;
-using Gwen.Control;
 using CookieLib.Content;
+using CookieLib.Interface;
+using CookieLib.TileEngine;
+using Cookie2D.World;
+using Cookie2D.World.Entity;
+using Cookie2D.World.Managers;
+using Cookie2D.World.Object;
 
-namespace Cookie2D
+namespace Cookie2D.Screens
 {
 	public class MenuScreen : ScreenProvider
 	{
 		public MenuScreen(Vector2i CurrentScreenSize, string GuiImagePath) 
-			: base(CurrentScreenSize, GuiImagePath)
-		{
-		}
+			: base(CurrentScreenSize, GuiImagePath) { }
 
 		public override void ScreenActivated()
 		{
@@ -22,6 +25,23 @@ namespace Cookie2D
 			lwnd.DisableResizing();
 			lwnd.Close();
 			GuiManager.Set<WindowControl>("loginwindow", lwnd);
+
+			Label lblLogin = new Label (lwnd);
+			lblLogin.SetPosition (10, 35);
+			lblLogin.Text = "Username:";
+
+			TextBox txtLogin = new TextBox (lwnd);
+			txtLogin.SetPosition (100, 30);
+			txtLogin.SetSize (270, 30);
+			txtLogin.SubmitPressed += txtLogin_SumbitPressed;
+			GuiManager.Set<TextBox>("txtlogin", txtLogin);
+
+			Button btnLoginAccept = new Button (lwnd);
+			btnLoginAccept.SetSize (388, 40);
+			btnLoginAccept.SetPosition (0, 225);
+			btnLoginAccept.Text = "Enter realm";
+			btnLoginAccept.SetImage("Content/textures/gui/buttons/login.png");
+			btnLoginAccept.Clicked += btnLoginAccept_Clicked;
 
 			Button btnLogin = new Button(GameGUI);
 			btnLogin.Text = "Login";
@@ -55,9 +75,6 @@ namespace Cookie2D
 
 		protected override void KeyPressed(RenderWindow sender, KeyEventArgs e)
 		{
-			if (e.Code == Keyboard.Key.LControl)
-				console.IsHidden = !console.IsHidden;
-
 			if (e.Code == Keyboard.Key.F12)
 			{
 				Image img = sender.Capture();
@@ -81,6 +98,44 @@ namespace Cookie2D
 				loginwind.Close();
 			else
 				loginwind.Show();
+		}
+
+		private void btnLoginAccept_Clicked(Base control, EventArgs args)
+		{
+			TextBox txtlogin = GuiManager.Get<TextBox>("txtlogin");
+			JoinGame (txtlogin.Text);
+		}
+
+		private void txtLogin_SumbitPressed(Base control, EventArgs args)
+		{
+			TextBox box = control as TextBox;
+			JoinGame (box.Text);
+		}
+
+		private void JoinGame(string pname)
+		{
+			Sprite psprite = new Sprite (ContentManager.Load<Texture> ("sprites/hero1"));
+			psprite.Position = new Vector2f (0, 0);
+			psprite.TextureRect = new IntRect (0, 0, 32, 32);
+			PlayerManager.AddPlayer(
+				new Player("local",psprite,
+					new Text(pname,
+						ContentManager.Load<Font>("DejaVuSans"),
+						10),
+					psprite.Position));
+
+			Tile[,] tile = new Tile[24,18];
+			tile[1,2] = new Tile();
+			tile[1,2].rec = new IntRect (0, 0, 32, 32);
+			MapManager.AddMap(
+				new TileMap ("local",
+					new Sprite(ContentManager.Load<Texture> ("tiles/enviroment")),
+					new Text ("First map",
+						ContentManager.Load<Font> ("DejaVuSans"),
+						10),
+					tile));
+			MapManager.GetLocalMap.AddBoundary (new IntRect (32, 64, 32, 32));
+			OnSwitchScreen(new GameScreen(new Vector2i(800,600), GuiImagePath));
 		}
 	}
 }

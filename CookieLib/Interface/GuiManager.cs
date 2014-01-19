@@ -22,8 +22,8 @@ namespace CookieLib.Interface
 
         public static T Set<T>(string name, object obj) where T : class
         {
-            assets.Add(name, (T)obj);
-            return (T)obj;
+			if (!assets.ContainsKey(name)) assets.Add(name, (T)obj);
+			return (T)obj;
         }
     }
 }

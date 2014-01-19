@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using SFML.Window;
 
-namespace SFML.Utils
+namespace CookieLib.Utils
 {
     public static class FloatMath
     {

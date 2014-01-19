@@ -71,7 +71,14 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MenuScreen.cs" />
+    <Compile Include="Screens\Game.cs" />
+    <Compile Include="Screens\Menu.cs" />
+    <Compile Include="World\Entity\Player.cs" />
+    <Compile Include="World\Managers\PlayerManager.cs" />
+    <Compile Include="World\Entity\IEntity.cs" />
+    <Compile Include="World\Object\TileMap.cs" />
+    <Compile Include="World\Object\IObject.cs" />
+    <Compile Include="World\Managers\MapManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -110,5 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="extlibs\" />
+    <Folder Include="Screens\" />
+    <Folder Include="World\" />
+    <Folder Include="World\Entity\" />
+    <Folder Include="World\Managers\" />
+    <Folder Include="World\Object\" />
   </ItemGroup>
 </Project>

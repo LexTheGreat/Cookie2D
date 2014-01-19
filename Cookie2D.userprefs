@@ -1,6 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cookie2D\World\Entity\Player.cs">
+    <Files>
+      <File FileName="Cookie2D\World\Entity\Player.cs" Line="59" Column="32" />
+      <File FileName="Cookie2D\Screens\Menu.cs" Line="130" Column="22" />
+      <File FileName="Cookie2D\Screens\Game.cs" Line="92" Column="33" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

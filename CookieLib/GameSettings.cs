@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
-
+using System.IO;
 
 namespace CookieLib
 {
@@ -24,6 +24,7 @@ namespace CookieLib
 
         public string Title = "Game";
         public Styles Style = Styles.Default;
+		public Stream Icon = null;
 
         ContextSettings context = new ContextSettings(32, 0, 4);
 
@@ -61,6 +62,11 @@ namespace CookieLib
         public RenderWindow Create()
         {
             var window = new RenderWindow(videoMode, Title, Style, context);
+			using(var memoryStream = new MemoryStream())
+			{
+				Icon.CopyTo(memoryStream);
+				window.SetIcon(32,32,memoryStream.ToArray());
+			}
             window.SetVerticalSyncEnabled(VerticalSync);
             window.SetFramerateLimit((uint)FramerateLimit);
             return window;

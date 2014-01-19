@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using SFML.Graphics;
 using SFML.Window;
-using SFML.Utils;
+using CookieLib.Utils;
 
 namespace CookieLib.Graphics
 {

@@ -3,7 +3,7 @@ using SFML.Graphics;
 using SFML.Window;
 using System.Diagnostics;
 
-namespace CookieLib.Graphics
+namespace CookieLib.TileEngine
 {
     /// <summary>
     /// Functions that provides color/texture rectangle data from tile map (or other source)
@@ -13,7 +13,7 @@ namespace CookieLib.Graphics
     /// <summary>
     /// Fast and universal renderer of tilemaps
     /// </summary>
-    public class MapRenderer : Drawable
+	public class TileRenderer : Drawable
     {
         private readonly float TileSize;
         public readonly int Layers;
@@ -41,7 +41,7 @@ namespace CookieLib.Graphics
         /// <param name="provider">Accesor to tilemap data</param>
         /// <param name="tileSize">Size of one tile</param>
         /// <param name="layers">Numbers of layers</param>
-        public MapRenderer(Texture texture, TileProvider provider, float tileSize = 16, int layers = 1)
+		public TileRenderer(Texture texture, TileProvider provider, float tileSize = 16, int layers = 1)
         {
             if(provider == null || layers <= 0) throw new ArgumentException();
             this.provider = provider;
