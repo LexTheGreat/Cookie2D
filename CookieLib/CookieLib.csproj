@@ -72,20 +72,34 @@
     <Compile Include="Interface\Windows\Console.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Utils\RectI.cs" />
-    <Compile Include="Utils\SimpleBinary.cs" />
     <Compile Include="Utils\AddonMath.cs" />
     <Compile Include="Utils\Vector2I.cs" />
     <Compile Include="Interface\GUI\GuiManager.cs" />
     <Compile Include="Interface\Screens\ScreenManager.cs" />
     <Compile Include="Interface\Screens\ScreenProvider.cs" />
-    <Compile Include="IObject.cs" />
     <Compile Include="Physics\CollisionDetection.cs" />
-    <Compile Include="Graphics\Tile Engine\Layers.cs" />
-    <Compile Include="Graphics\Tile Engine\Map.cs" />
-    <Compile Include="Graphics\Tile Engine\NotLoadedException.cs" />
-    <Compile Include="Graphics\Tile Engine\ObjectGroup.cs" />
-    <Compile Include="Graphics\Tile Engine\TiledObject.cs" />
-    <Compile Include="Graphics\Tile Engine\Tileset.cs" />
+    <Compile Include="Content\SimpleBinary.cs" />
+    <Compile Include="Tiled\ImageLayer.cs" />
+    <Compile Include="Tiled\Layer.cs" />
+    <Compile Include="Tiled\Map.cs" />
+    <Compile Include="Tiled\ObjectGroup.cs" />
+    <Compile Include="Tiled\TiledCore.cs" />
+    <Compile Include="Tiled\Tileset.cs" />
+    <Compile Include="Tiled\zlib\CRC32.cs" />
+    <Compile Include="Tiled\zlib\Deflate.cs" />
+    <Compile Include="Tiled\zlib\DeflateStream.cs" />
+    <Compile Include="Tiled\zlib\GZipStream.cs" />
+    <Compile Include="Tiled\zlib\Inflate.cs" />
+    <Compile Include="Tiled\zlib\InfTree.cs" />
+    <Compile Include="Tiled\zlib\ParallelDeflateOutputStream.cs" />
+    <Compile Include="Tiled\zlib\Tree.cs" />
+    <Compile Include="Tiled\zlib\Zlib.cs" />
+    <Compile Include="Tiled\zlib\ZlibBaseStream.cs" />
+    <Compile Include="Tiled\zlib\ZlibCodec.cs" />
+    <Compile Include="Tiled\zlib\ZlibConstants.cs" />
+    <Compile Include="Tiled\zlib\ZlibStream.cs" />
+    <Compile Include="Tiled\Renderer\Canvas.cs" />
+    <Compile Include="Tiled\Renderer\Mosaic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
@@ -93,6 +107,11 @@
     <Folder Include="Interface\GUI\" />
     <Folder Include="Interface\Screens\" />
     <Folder Include="Physics\" />
-    <Folder Include="Graphics\Tile Engine\" />
+    <Folder Include="Tiled\" />
+    <Folder Include="Tiled\Renderer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tiled\zlib\License.txt" />
+    <None Include="Tiled\zlib\License.zlib.txt" />
   </ItemGroup>
 </Project>

@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using CookieLib.Graphics.TileEngine;
+using CookieLib.Tiled;
 
 namespace Cookie2D.World.Managers
 {
 	public static class MapManager
 	{
-		private static Dictionary<string, Map> _maps = new Dictionary<string, Map>();
+		private static Dictionary<string, TmxMap> _maps = new Dictionary<string, TmxMap>();
 		private static string _localmap = "local"; //just temporary for testing
 
-		public static Map GetMap (string uid)
+		public static TmxMap GetMap (string uid)
 		{
-			Map result;
+			TmxMap result;
 			if (_maps.TryGetValue(uid, out result))
 			{
 				return result;
@@ -19,15 +19,15 @@ namespace Cookie2D.World.Managers
 			return result;
 		}
 
-		public static Dictionary<string, Map> GetMaps
+		public static Dictionary<string, TmxMap> GetMaps
 		{
 			get { return _maps; }
 		}
 
-		public static Map GetLocalMap
+		public static TmxMap GetLocalMap
 		{
 			get {
-				Map result;
+				TmxMap result;
 				if (_maps.TryGetValue (_localmap, out result)) {
 					return result;
 				}
@@ -35,7 +35,7 @@ namespace Cookie2D.World.Managers
 			}
 		}
 
-		public static void AddMap(string UniqueIdentifier, Map map)
+		public static void AddMap(string UniqueIdentifier, TmxMap map)
 		{
 			_maps.Add(UniqueIdentifier, map);
 		}

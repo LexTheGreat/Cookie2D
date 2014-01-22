@@ -7,18 +7,21 @@ using Cookie2D.World;
 using Cookie2D.World.Entity;
 using Cookie2D.World.Managers;
 using CookieLib.Interface.Screens;
-using CookieLib.Graphics.TileEngine;
+using CookieLib.Tiled;
+using CookieLib.Tiled.Renderer;
 
 namespace Cookie2D.Screens
 {
 	public class GameScreen : ScreenProvider
 	{
+		private TmxMosaic _maprenderer = null;
 		public GameScreen (Vector2i CurrentScreenSize, string GuiImagePath) 
 			: base(CurrentScreenSize, GuiImagePath) { }
 
 		public override void ScreenActivated()
 		{
 			Program.screenmng.Camera.Center = PlayerManager.GetLocalPlayer.Pos;
+			_maprenderer = new TmxMosaic (rndTarget, MapManager.GetLocalMap);
 		}
 
 		public override void ScreenDeactivated()
@@ -29,17 +32,11 @@ namespace Cookie2D.Screens
 
 		public override void Draw(RenderTarget Target)
 		{
-
-			spriteBatch.Begin();
-			foreach (Layer lay in MapManager.GetLocalMap.layers) {
-				foreach (Sprite spr in lay.Sprites) {
-					spriteBatch.Draw (spr);
-				}
-			}
-			foreach (Player ply in PlayerManager.GetPlayers.Values)
+			_maprenderer.DrawCanvas (spriteBatch);
+			spriteBatch.Begin(RenderStates.Default);
+				foreach (Player ply in PlayerManager.GetPlayers.Values)
 				spriteBatch.Draw(ply.Sprite);
 			spriteBatch.End();
-			spriteBatch.Draw(Target, RenderStates.Default);
 			foreach (Player ply in PlayerManager.GetPlayers.Values)
 				ply.Name.Draw(Target, RenderStates.Default);
 		}

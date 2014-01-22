@@ -1,22 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CookieLib\Interface\Screens\ScreenProvider.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CookieLib\Interface\Windows\Console.cs">
     <Files>
-      <File FileName="Cookie2D\Program.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Graphics\Tile Engine\Layers.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Graphics\Tile Engine\Map.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Graphics\Tile Engine\NotLoadedException.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Graphics\Tile Engine\ObjectGroup.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Graphics\Tile Engine\TiledObject.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Graphics\Tile Engine\Tileset.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\Screens\Menu.cs" Line="75" Column="4" />
+      <File FileName="CookieLib\Graphics\SpriteBatch.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Interface\Screens\ScreenProvider.cs" Line="1" Column="1" />
       <File FileName="Cookie2D\Screens\Game.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Interface\Screens\ScreenProvider.cs" Line="131" Column="51" />
-      <File FileName="CookieLib\Interface\Screens\ScreenManager.cs" Line="148" Column="6" />
+      <File FileName="Cookie2D\Screens\Menu.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Tiled\zlib\CRC32.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Tiled\ImageLayer.cs" Line="6" Column="3" />
+      <File FileName="CookieLib\Tiled\Layer.cs" Line="7" Column="1" />
+      <File FileName="CookieLib\Tiled\Map.cs" Line="7" Column="1" />
+      <File FileName="CookieLib\Tiled\ObjectGroup.cs" Line="7" Column="1" />
+      <File FileName="CookieLib\Tiled\TiledCore.cs" Line="10" Column="38" />
+      <File FileName="CookieLib\Tiled\Tileset.cs" Line="18" Column="42" />
+      <File FileName="CookieLib\Tiled\Renderer\Mosaic.cs" Line="6" Column="3" />
+      <File FileName="CookieLib\Tiled\Renderer\Canvas.cs" Line="1" Column="1" />
+      <File FileName="Cookie2D\Program.cs" Line="1" Column="1" />
       <File FileName="Cookie2D\World\Managers\MapManager.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\World\Entity\Player.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Interface\Screens\ScreenManager.cs" Line="1" Column="1" />
       <File FileName="Cookie2D\World\Managers\PlayerManager.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\World\Entity\IEntity.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Physics\CollisionDetection.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\GameSettings.cs" Line="9" Column="16" />
+      <File FileName="CookieLib\Interface\Windows\Console.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

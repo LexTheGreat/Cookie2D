@@ -11,6 +11,7 @@ namespace CookieLib.Interface.Screens
 	{
 		#region Variables
 		private Canvas _gamegui = null;
+		private RenderTarget _target = null;
 		private Gwen.Input.SFML _ginput = null;
 		private Vector2i _screensize = new Vector2i(0, 0);
 		private string _guipath = null;
@@ -24,6 +25,18 @@ namespace CookieLib.Interface.Screens
 			get
 			{
 				return _gamegui;
+			}
+		}
+
+		public RenderTarget rndTarget
+		{
+			get
+			{
+				return _target;
+			}
+			set
+			{
+				_target = value;
 			}
 		}
 
@@ -52,9 +65,6 @@ namespace CookieLib.Interface.Screens
 		#region Constructors
 		public ScreenProvider(Vector2i CurrentScreenSize, string GuiImagePath)
 		{
-			//initializes optimized sprite renderer
-			spriteBatch = new SpriteBatch();
-
 			//sets screen size
 			_screensize = CurrentScreenSize;
 
@@ -63,6 +73,9 @@ namespace CookieLib.Interface.Screens
 		}
 		public void InitializeGUI(RenderTarget window)
 		{
+			//initializes optimized sprite renderer
+			spriteBatch = new SpriteBatch(window);
+
 			// create GWEN renderer
 			Gwen.Renderer.SFML gwenRenderer = new Gwen.Renderer.SFML(window);
 

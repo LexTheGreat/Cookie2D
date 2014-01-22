@@ -9,7 +9,6 @@ using CookieLib.Interface.Screens;
 using NetEXT.TimeFunctions;
 using Cookie2D.Screens;
 using Cookie2D.World;
-using CookieLib.Graphics.TileEngine;
 
 namespace Cookie2D
 {
@@ -17,7 +16,6 @@ namespace Cookie2D
     {
         public const int screenX = 800;
         public const int screenY = 600;
-		public static Map map = null;
 		public static ScreenManager screenmng;
 
         /// <summary>

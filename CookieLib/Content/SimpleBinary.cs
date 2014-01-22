@@ -1,8 +1,15 @@
-﻿using System;
+﻿/* File Description
+ * Original Works/Author: Thomas Slusny
+ * Other Contributors: None
+ * Author Website: http://indiearmory.com
+ * License: MIT
+*/
+
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace CookieLib.Utils
+namespace CookieLib.Content
 {
     /// <summary>
     /// Provides simple way of loading and saving binary files

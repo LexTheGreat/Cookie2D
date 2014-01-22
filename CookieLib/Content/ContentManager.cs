@@ -1,4 +1,11 @@
-﻿using System;
+﻿/* File Description
+ * Original Works/Author: krzat
+ * Other Contributors: Thomas Slusny
+ * Author Website: https://bitbucket.org/krzat/sfml.utils
+ * License: GPL 3.0
+*/
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

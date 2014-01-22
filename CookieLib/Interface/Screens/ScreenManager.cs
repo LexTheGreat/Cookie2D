@@ -82,6 +82,7 @@ namespace CookieLib.Interface.Screens
 			BindWindowEvents();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = _gamewindow;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 			_timestep = TimeStep;
 		}
@@ -103,6 +104,7 @@ namespace CookieLib.Interface.Screens
 		{
 			if (_screenmanagerstack.Contains(NewScreenManager)) return;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].DisposeGUI ();
+			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = null;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenDeactivated();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen -= OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen -= OnCloseScreen;
@@ -110,11 +112,13 @@ namespace CookieLib.Interface.Screens
 			_screenmanagerstack[_screenmanagerstack.Count - 1].InitializeGUI (_gamewindow);
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = _gamewindow;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 		}
 		private void OnCloseScreen()
 		{
 			_screenmanagerstack[_screenmanagerstack.Count - 1].DisposeGUI();
+			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = null;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenDeactivated();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen -= OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen -= OnCloseScreen;
@@ -125,6 +129,7 @@ namespace CookieLib.Interface.Screens
 				_screenmanagerstack[_screenmanagerstack.Count - 1].InitializeGUI (_gamewindow);
 				_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 				_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
+				_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = _gamewindow;
 				_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 			}
 		}

@@ -1,7 +1,7 @@
 ﻿﻿/* File Description
- * Original Works/Author: Vinicius "Epiplon" Castanheira
+ * Original Works/Author: krzat
  * Other Contributors: Thomas Slusny
- * Website: https://github.com/vncastanheira/SharpTMX
+ * Author Website: https://bitbucket.org/krzat/sfml.utils
  * License: GPL 3.0
 */
 
@@ -17,7 +17,7 @@ namespace CookieLib.Graphics
     /// <summary>
     /// Provides optimized drawing of sprites
     /// </summary>
-    public class SpriteBatch : Drawable
+    public class SpriteBatch
     {
         private struct QueueItem
         {
@@ -26,7 +26,8 @@ namespace CookieLib.Graphics
         }
 
         private List<QueueItem> textures = new List<QueueItem>();
-
+		private RenderTarget target;
+		private RenderStates blend;
         private readonly int Max;
 
         public int Count
@@ -34,9 +35,10 @@ namespace CookieLib.Graphics
             get { return count; }
         }
 
-        public SpriteBatch(int maxCapacity = 100000)
+		public SpriteBatch(RenderTarget graphicsDevice, int maxCapacity = 100000)
         {
             Max = maxCapacity * 4;
+			target = graphicsDevice;
         }
 
         private Vertex[] vertices = new Vertex[100 * 4];
@@ -45,13 +47,13 @@ namespace CookieLib.Graphics
         private bool active;
         private uint queueCount;
 
-        public void Begin()
+		public void Begin(RenderStates BlendState)
         {
             if (active) throw new Exception("Already active");
             count = 0;
             textures.Clear();
+			blend = BlendState;
             active = true;
-
             activeTexture = null;
         }
 
@@ -60,6 +62,16 @@ namespace CookieLib.Graphics
             if (!active) throw new Exception("Call end first.");
             Enqueue();
             active = false;
+
+			uint index = 0;
+			foreach (var item in textures)
+			{
+				Debug.Assert(item.Count > 0);
+				blend.Texture = item.Texture;
+
+				target.Draw(vertices, index, item.Count, PrimitiveType.Quads, blend);
+				index += item.Count;
+			}
         }
 
         private void Enqueue()
@@ -207,7 +219,7 @@ namespace CookieLib.Graphics
                 width = (int)texture.Size.X;
                 height = (int)texture.Size.Y;
             }
-            Draw(texture, rec, new IntRect(0, 0, width, height), color);
+			Draw(texture, rec, new IntRect(0, 0, width, height), color);
         }
 
         public void Draw(Texture texture, Vector2f pos, Color color)
@@ -216,21 +228,6 @@ namespace CookieLib.Graphics
             var width = (int)texture.Size.X;
             var height = (int)texture.Size.Y;
             Draw(texture, new FloatRect(pos.X, pos.Y, width, height), new IntRect(0, 0, width, height), color);
-        }
-
-        public void Draw(RenderTarget target, RenderStates states)
-        {
-            if (active) throw new Exception("Call End first.");
-
-            uint index = 0;
-            foreach (var item in textures)
-            {
-                Debug.Assert(item.Count > 0);
-                states.Texture = item.Texture;
-
-                target.Draw(vertices, index, item.Count, PrimitiveType.Quads, states);
-                index += item.Count;
-            }
         }
     }
 }

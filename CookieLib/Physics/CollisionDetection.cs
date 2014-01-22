@@ -1,3 +1,10 @@
+/* File Description
+ * Original Works/Author: Thomas Slusny
+ * Other Contributors: None
+ * Author Website: http://indiearmory.com
+ * License: MIT
+*/
+
 using System;
 using System.Collections;
 using SFML.Graphics;

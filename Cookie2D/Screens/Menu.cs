@@ -8,7 +8,7 @@ using Cookie2D.World.Managers;
 using CookieLib.Content;
 using CookieLib.Interface.Screens;
 using CookieLib.Interface.GUI;
-using CookieLib.Graphics.TileEngine;
+using CookieLib.Tiled;
 using CookieLib.Utils;
 
 namespace Cookie2D.Screens
@@ -66,12 +66,11 @@ namespace Cookie2D.Screens
 
 		public override void Draw(RenderTarget Target)
 		{
-			spriteBatch.Begin();
+			spriteBatch.Begin(RenderStates.Default);
 			spriteBatch.Draw(ContentManager.Load<Texture>("gui/background"), new FloatRect(0, 0, 800, 600), new Color(255, 255, 255));
 			spriteBatch.Draw(ContentManager.Load<Texture>("gui/overlay"), new FloatRect(0, 0, 800, 600), new Color(255, 255, 255));
 			spriteBatch.Draw(ContentManager.Load<Texture>("gui/logo"), new Vector2f(160, 200), new Color(255, 255, 255));
 			spriteBatch.End();
-			spriteBatch.Draw(Target, RenderStates.Default);
 		}
 
 		private void btnLogin_Clicked(Base control, EventArgs args)
@@ -106,12 +105,9 @@ namespace Cookie2D.Screens
 						ContentManager.Load<Font>("DejaVuSans"),
 						10),
 					_sprite.Position));
-			Map _map = new Map ("local","Content/untitled.tmx");
-			_map.loadTilesets();
-			_map.loadLayers();
-			_map.loadSprites ();
-			MapManager.SetLocalUID (_map.uid);
-			MapManager.AddMap (_map.uid, _map);
+			TmxMap _map = new TmxMap("Content/untitled.tmx");
+			MapManager.SetLocalUID ("local");
+			MapManager.AddMap ("local", _map);
 			OnSwitchScreen(new GameScreen(new Vector2i(800,600), GuiImagePath));
 		}
 	}
