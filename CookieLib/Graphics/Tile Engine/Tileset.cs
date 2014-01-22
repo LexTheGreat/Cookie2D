@@ -31,8 +31,6 @@ namespace CookieLib.Graphics.TileEngine {
 		public int ImageWidth {get; set;}
 		/// <summary> Image's height. </summary>
 		public int ImageHeight {get; set;}
-		/// <summary> The image from ImageSource, loaded as a SFML Image object. </summary>
-		public Image ImageSFML {get; set;}
 		/// <summary> The Texture generated from ImageSFML. </summary>
 		public Texture TextureSFML {get; set;}
 

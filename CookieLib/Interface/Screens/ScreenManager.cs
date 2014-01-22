@@ -11,6 +11,7 @@ namespace CookieLib.Interface.Screens
 	{
 		#region Variables
 		private RenderWindow _gamewindow = null;
+		private View _camera = null;
 		private List<ScreenProvider> _screenmanagerstack = new List<ScreenProvider>();
 		private Time _timestep = Time.Zero;
 		private Color _clearcolor = Color.Black;
@@ -23,6 +24,17 @@ namespace CookieLib.Interface.Screens
 			get
 			{
 				return _gamewindow;
+			}
+		}
+		public View Camera
+		{
+			get
+			{
+				return _camera;
+			}
+			set
+			{
+				_camera = value;
 			}
 		}
 		public Time TimeStep
@@ -64,6 +76,7 @@ namespace CookieLib.Interface.Screens
 		public ScreenManager(GameSettings settings, ScreenProvider InitialScreenManager, Time TimeStep)
 		{
 			_gamewindow = settings.Create();
+			_camera = _gamewindow.GetView ();
 			InitialScreenManager.InitializeGUI(_gamewindow);
 			_screenmanagerstack.Add(InitialScreenManager);
 			BindWindowEvents();
@@ -128,6 +141,7 @@ namespace CookieLib.Interface.Screens
 				while (elapsedtime >= TimeStep)
 				{
 					elapsedtime -= TimeStep;
+					_gamewindow.SetView (_camera);
 					_screenmanagerstack[_screenmanagerstack.Count - 1].Update(TimeStep);
 				}
 				if (_screenmanagerstack.Count >= 1) 

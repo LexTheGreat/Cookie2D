@@ -29,10 +29,12 @@ namespace Cookie2D.World.Entity
 			}
 		}
 
-		public bool CanMove()
+		public bool CanMove(Vector2f temppos)
 		{
-			IntRect tmprect;
-
+			if (temppos.X < 0) return false;
+			if (temppos.Y < 0) return false;
+			if (temppos.X > (MapManager.GetLocalMap.Width - 1) * MapManager.GetLocalMap.TileWidth) return false;
+			if (temppos.Y > (MapManager.GetLocalMap.Height -1) * MapManager.GetLocalMap.TileHeight) return false;
 			return true;
 		}
 
@@ -61,7 +63,10 @@ namespace Cookie2D.World.Entity
 
 				BoundingBox = new IntRect ((int)tempPos.X, (int)tempPos.Y + 16, 32, 16);
 
-				if (CanMove()) { Pos = tempPos; }
+				if (CanMove(tempPos)) { 
+					Pos = tempPos; 
+					Program.screenmng.Camera.Center = Pos;
+				}
 				Sprite.Position = Pos;
 				FloatRect NameSize = Name.GetLocalBounds ();
 				Name.Position = new Vector2f (Pos.X + 16 - NameSize.Width / 2, Pos.Y - 20);

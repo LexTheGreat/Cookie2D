@@ -27,6 +27,7 @@ namespace CookieLib.Graphics.TileEngine
 			public XmlNodeList objectgroupNodes; // Should be private
 
 			// Map properties
+			public string uid { get; private set; }
 			public float Version { get; private set; }
 			public string Orientation { get; private set; }
 			public int Width { get; private set; }
@@ -89,7 +90,8 @@ namespace CookieLib.Graphics.TileEngine
 			/// Constructs the map and loads the informations on the object.
 			/// </summary>
 			/// <param name="directory"> The directory of the .tmx file.</param>
-			public Map(String directory) {
+		public Map(string UniqueIdentifier, String directory) {
+				uid = UniqueIdentifier;
 				loadMembers();
 				loadDirectory(directory);
 				loadNodes();
@@ -365,8 +367,7 @@ namespace CookieLib.Graphics.TileEngine
 				tilesets.Sort(); // Sort the tileset based on his FirstGID
 				// Loads the tilesets images from disk to memory
 				foreach (Tileset tset in tilesets) {
-					tset.ImageSFML = new Image("Content" + tset.ImageSource);
-					tset.TextureSFML = new Texture(tset.ImageSFML);
+				tset.TextureSFML = new Texture("Content/" + tset.ImageSource);
 				}
 				// Build the image for each layer
 				foreach (Layer layer in layers) {

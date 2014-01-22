@@ -133,6 +133,20 @@ namespace CookieLib.Interface.Screens
 			_ginput.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, true));
 			if (e.Code == Keyboard.Key.LControl)
 				console.IsHidden = !console.IsHidden;
+			if (e.Code == Keyboard.Key.F12)
+			{
+				Image img = sender.Capture();
+				if (img.Pixels == null)
+				{
+					console.PrintText("Failed to capture window");
+				}
+				string path = String.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
+					DateTime.Now.Second);
+				console.PrintText(path + " saved!");
+				if (!img.SaveToFile(path))
+					console.PrintText("Failed to save screenshot");
+				img.Dispose();
+			}
 			KeyPressed(sender,e);
 		}
 

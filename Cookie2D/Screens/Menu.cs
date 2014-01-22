@@ -74,24 +74,6 @@ namespace Cookie2D.Screens
 			spriteBatch.Draw(Target, RenderStates.Default);
 		}
 
-		protected override void KeyPressed(RenderWindow sender, KeyEventArgs e)
-		{
-			if (e.Code == Keyboard.Key.F12)
-			{
-				Image img = sender.Capture();
-				if (img.Pixels == null)
-				{
-					console.PrintText("Failed to capture window");
-				}
-				string path = String.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
-					DateTime.Now.Second);
-					console.PrintText(path + " saved!");
-				if (!img.SaveToFile(path))
-					console.PrintText("Failed to save screenshot");
-				img.Dispose();
-			}
-		}
-
 		private void btnLogin_Clicked(Base control, EventArgs args)
 		{
 			WindowControl loginwind = GuiManager.Get<WindowControl>("loginwindow");
@@ -115,19 +97,21 @@ namespace Cookie2D.Screens
 
 		private void JoinGame(string pname)
 		{
-			Sprite psprite = new Sprite (ContentManager.Load<Texture> ("sprites/hero1"));
-			psprite.Position = new Vector2f (0, 0);
-			psprite.TextureRect = new IntRect (0, 0, 32, 32);
+			Sprite _sprite = new Sprite (ContentManager.Load<Texture> ("sprites/hero1"));
+			_sprite.Position = new Vector2f (0, 0);
+			_sprite.TextureRect = new IntRect (0, 0, 32, 32);
 			PlayerManager.AddPlayer(
-				new Player("local",psprite,
+				new Player("local",_sprite,
 					new Text(pname,
 						ContentManager.Load<Font>("DejaVuSans"),
 						10),
-					psprite.Position));
-			Program.map = new Map ("Content/untitled.tmx");
-			Program.map.loadTilesets();
-			Program.map.loadLayers();
-			Program.map.loadSprites ();
+					_sprite.Position));
+			Map _map = new Map ("local","Content/untitled.tmx");
+			_map.loadTilesets();
+			_map.loadLayers();
+			_map.loadSprites ();
+			MapManager.SetLocalUID (_map.uid);
+			MapManager.AddMap (_map.uid, _map);
 			OnSwitchScreen(new GameScreen(new Vector2i(800,600), GuiImagePath));
 		}
 	}

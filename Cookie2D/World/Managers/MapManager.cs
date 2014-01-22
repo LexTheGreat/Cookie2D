@@ -6,12 +6,12 @@ namespace Cookie2D.World.Managers
 {
 	public static class MapManager
 	{
-		private static Dictionary<string, TileMap> _maps = new Dictionary<string, TileMap>();
+		private static Dictionary<string, Map> _maps = new Dictionary<string, Map>();
 		private static string _localmap = "local"; //just temporary for testing
 
-		public static TileMap GetMap (string uid)
+		public static Map GetMap (string uid)
 		{
-			TileMap result;
+			Map result;
 			if (_maps.TryGetValue(uid, out result))
 			{
 				return result;
@@ -19,15 +19,15 @@ namespace Cookie2D.World.Managers
 			return result;
 		}
 
-		public static Dictionary<string, TileMap> GetMaps
+		public static Dictionary<string, Map> GetMaps
 		{
 			get { return _maps; }
 		}
 
-		public static TileMap GetLocalMap
+		public static Map GetLocalMap
 		{
 			get {
-				TileMap result;
+				Map result;
 				if (_maps.TryGetValue (_localmap, out result)) {
 					return result;
 				}
@@ -35,9 +35,9 @@ namespace Cookie2D.World.Managers
 			}
 		}
 
-		public static void AddMap(TileMap map)
+		public static void AddMap(string UniqueIdentifier, Map map)
 		{
-			_maps.Add(map.UID, map);
+			_maps.Add(UniqueIdentifier, map);
 		}
 
 		public static void SetLocalUID(string UniqueIdentifier)
@@ -49,13 +49,7 @@ namespace Cookie2D.World.Managers
 		{
 			_maps.Remove(uid);
 		}
-
-		public static TileMap FindMap(string name)
-		{
-			foreach (TileMap mp in _maps.Values)
-				if (mp.Name.ToString().Equals(name)) return mp;
-			return null;
-		}
+		
 	}
 }
 

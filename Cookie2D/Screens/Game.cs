@@ -18,13 +18,20 @@ namespace Cookie2D.Screens
 
 		public override void ScreenActivated()
 		{
+			Program.screenmng.Camera.Center = PlayerManager.GetLocalPlayer.Pos;
 		}
-		
+
+		public override void ScreenDeactivated()
+		{
+			Program.screenmng.Camera.Center = new Vector2f (Program.screenX /2, Program.screenY /2);
+		}
+
+
 		public override void Draw(RenderTarget Target)
 		{
 
 			spriteBatch.Begin();
-			foreach (Layer lay in Program.map.layers) {
+			foreach (Layer lay in MapManager.GetLocalMap.layers) {
 				foreach (Sprite spr in lay.Sprites) {
 					spriteBatch.Draw (spr);
 				}
