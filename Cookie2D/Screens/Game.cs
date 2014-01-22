@@ -6,11 +6,8 @@ using SFML.Window;
 using Cookie2D.World;
 using Cookie2D.World.Entity;
 using Cookie2D.World.Managers;
-using CookieLib.Graphics;
-using CookieLib.TileEngine;
-using CookieLib.Content;
-using CookieLib.Interface;
-using Cookie2D.World.Object;
+using CookieLib.Interface.Screens;
+using CookieLib.Graphics.TileEngine;
 
 namespace Cookie2D.Screens
 {
@@ -25,8 +22,13 @@ namespace Cookie2D.Screens
 		
 		public override void Draw(RenderTarget Target)
 		{
-			MapManager.GetLocalMap.GetRenderer.Draw(Target, RenderStates.Default);
+
 			spriteBatch.Begin();
+			foreach (Layer lay in Program.map.layers) {
+				foreach (Sprite spr in lay.Sprites) {
+					spriteBatch.Draw (spr);
+				}
+			}
 			foreach (Player ply in PlayerManager.GetPlayers.Values)
 				spriteBatch.Draw(ply.Sprite);
 			spriteBatch.End();

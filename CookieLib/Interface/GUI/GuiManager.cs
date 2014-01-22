@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookieLib.Interface
+namespace CookieLib.Interface.GUI
 {
     public static class GuiManager
     {
@@ -22,7 +22,8 @@ namespace CookieLib.Interface
 
         public static T Set<T>(string name, object obj) where T : class
         {
-			if (!assets.ContainsKey(name)) assets.Add(name, (T)obj);
+            if (!assets.ContainsKey(name))
+                assets.Add(name, (T)obj);
 			return (T)obj;
         }
     }

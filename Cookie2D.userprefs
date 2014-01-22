@@ -1,10 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cookie2D\World\Entity\Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cookie2D\Program.cs">
     <Files>
-      <File FileName="Cookie2D\World\Entity\Player.cs" Line="59" Column="32" />
-      <File FileName="Cookie2D\Screens\Menu.cs" Line="130" Column="22" />
-      <File FileName="Cookie2D\Screens\Game.cs" Line="92" Column="33" />
+      <File FileName="Cookie2D\Program.cs" Line="26" Column="20" />
+      <File FileName="CookieLib\Graphics\Tile Engine\Layers.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Graphics\Tile Engine\Map.cs" Line="367" Column="12" />
+      <File FileName="CookieLib\Graphics\Tile Engine\NotLoadedException.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Graphics\Tile Engine\ObjectGroup.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Graphics\Tile Engine\TiledObject.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Graphics\Tile Engine\Tileset.cs" Line="1" Column="1" />
+      <File FileName="Cookie2D\Screens\Menu.cs" Line="1" Column="1" />
+      <File FileName="Cookie2D\Screens\Game.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Interface\Screens\ScreenProvider.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Interface\Screens\ScreenManager.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -1,9 +1,16 @@
-﻿using System;
+﻿﻿/* File Description
+ * Original Works/Author: Vinicius "Epiplon" Castanheira
+ * Other Contributors: Thomas Slusny
+ * Website: https://github.com/vncastanheira/SharpTMX
+ * License: GPL 3.0
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using SFML.Graphics;
 using SFML.Window;
-using CookieLib.Utils;
+
 
 namespace CookieLib.Graphics
 {
@@ -109,7 +116,7 @@ namespace CookieLib.Graphics
 
             if (true)
             {
-                rotation = FloatMath.ToRadians(rotation);
+                rotation = CookieLib.Utils.FloatMath.ToRadians(rotation);
                 sin = (float)Math.Sin(rotation);
                 cos = (float)Math.Cos(rotation);
             }

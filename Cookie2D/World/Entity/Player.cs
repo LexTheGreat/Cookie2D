@@ -32,12 +32,7 @@ namespace Cookie2D.World.Entity
 		public bool CanMove()
 		{
 			IntRect tmprect;
-			foreach (IntRect bndr in MapManager.GetLocalMap.GetBoundaries) 
-			{
-				if (BoundingBox.Intersects (bndr, out tmprect))
 
-					return false;
-			}
 			return true;
 		}
 

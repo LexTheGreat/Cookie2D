@@ -5,7 +5,7 @@ using NetEXT.TimeFunctions;
 using Gwen.Control;
 using CookieLib.Graphics;
 
-namespace CookieLib.Interface
+namespace CookieLib.Interface.Screens
 {
 	public abstract class ScreenProvider
 	{

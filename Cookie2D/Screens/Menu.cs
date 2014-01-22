@@ -2,13 +2,14 @@ using System;
 using Gwen.Control;
 using SFML.Window;
 using SFML.Graphics;
-using CookieLib.Content;
-using CookieLib.Interface;
-using CookieLib.TileEngine;
 using Cookie2D.World;
 using Cookie2D.World.Entity;
 using Cookie2D.World.Managers;
-using Cookie2D.World.Object;
+using CookieLib.Content;
+using CookieLib.Interface.Screens;
+using CookieLib.Interface.GUI;
+using CookieLib.Graphics.TileEngine;
+using CookieLib.Utils;
 
 namespace Cookie2D.Screens
 {
@@ -123,18 +124,10 @@ namespace Cookie2D.Screens
 						ContentManager.Load<Font>("DejaVuSans"),
 						10),
 					psprite.Position));
-
-			Tile[,] tile = new Tile[24,18];
-			tile[1,2] = new Tile();
-			tile[1,2].rec = new IntRect (0, 0, 32, 32);
-			MapManager.AddMap(
-				new TileMap ("local",
-					new Sprite(ContentManager.Load<Texture> ("tiles/enviroment")),
-					new Text ("First map",
-						ContentManager.Load<Font> ("DejaVuSans"),
-						10),
-					tile));
-			MapManager.GetLocalMap.AddBoundary (new IntRect (32, 64, 32, 32));
+			Program.map = new Map ("Content/untitled.tmx");
+			Program.map.loadTilesets();
+			Program.map.loadLayers();
+			Program.map.loadSprites ();
 			OnSwitchScreen(new GameScreen(new Vector2i(800,600), GuiImagePath));
 		}
 	}

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Cookie2D.World.Object;
+using CookieLib.Graphics.TileEngine;
 
 namespace Cookie2D.World.Managers
 {
@@ -37,7 +37,7 @@ namespace Cookie2D.World.Managers
 
 		public static void AddMap(TileMap map)
 		{
-			_maps.Add(map.UniqueIdentifier, map);
+			_maps.Add(map.UID, map);
 		}
 
 		public static void SetLocalUID(string UniqueIdentifier)

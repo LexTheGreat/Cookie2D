@@ -62,11 +62,14 @@ namespace CookieLib
         public RenderWindow Create()
         {
             var window = new RenderWindow(videoMode, Title, Style, context);
-			using(var memoryStream = new MemoryStream())
-			{
-				Icon.CopyTo(memoryStream);
-				window.SetIcon(32,32,memoryStream.ToArray());
-			}
+
+            if (Icon != null) {
+                using (var memoryStream = new MemoryStream())
+                {
+                    Icon.CopyTo(memoryStream);
+                    window.SetIcon(32, 32, memoryStream.ToArray());
+                }
+            }
             window.SetVerticalSyncEnabled(VerticalSync);
             window.SetFramerateLimit((uint)FramerateLimit);
             return window;

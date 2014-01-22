@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -59,28 +59,40 @@
     <Reference Include="NetEXT">
       <HintPath>..\Cookie2D\extlibs\NetEXT.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Content\ContentManager.cs" />
     <Compile Include="Content\ContentProvider.cs" />
     <Compile Include="Graphics\SpriteBatch.cs" />
-    <Compile Include="Interface\GuiManager.cs" />
-    <Compile Include="Interface\ScreenManager.cs" />
-    <Compile Include="Interface\ScreenProvider.cs" />
+    <Compile Include="Utils\ColorARGB.cs" />
     <Compile Include="Utils\FloatMath.cs" />
     <Compile Include="Interface\Windows\Console.cs" />
-    <Compile Include="Tile Engine\Tile.cs" />
-    <Compile Include="Tile Engine\TileRenderer.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Utils\RectI.cs" />
+    <Compile Include="Utils\SimpleBinary.cs" />
+    <Compile Include="Utils\AddonMath.cs" />
+    <Compile Include="Utils\Vector2I.cs" />
+    <Compile Include="Interface\GUI\GuiManager.cs" />
+    <Compile Include="Interface\Screens\ScreenManager.cs" />
+    <Compile Include="Interface\Screens\ScreenProvider.cs" />
+    <Compile Include="IObject.cs" />
+    <Compile Include="Physics\CollisionDetection.cs" />
+    <Compile Include="Graphics\Tile Engine\Layers.cs" />
+    <Compile Include="Graphics\Tile Engine\Map.cs" />
+    <Compile Include="Graphics\Tile Engine\NotLoadedException.cs" />
+    <Compile Include="Graphics\Tile Engine\ObjectGroup.cs" />
+    <Compile Include="Graphics\Tile Engine\TiledObject.cs" />
+    <Compile Include="Graphics\Tile Engine\Tileset.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Content\" />
-    <Folder Include="Graphics\" />
-    <Folder Include="Interface\" />
-    <Folder Include="Utils\" />
-    <Folder Include="Interface\Windows\" />
-    <Folder Include="Tile Engine\" />
+    <Folder Include="Interface\GUI\" />
+    <Folder Include="Interface\Screens\" />
+    <Folder Include="Physics\" />
+    <Folder Include="Graphics\Tile Engine\" />
   </ItemGroup>
 </Project>

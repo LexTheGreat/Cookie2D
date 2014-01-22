@@ -10,7 +10,7 @@ namespace CookieLib.Utils
     public static class FloatMath
     {
         private const int LookupSize = 1024*16; //has to be power of 2
-        private static readonly float[] getSin, getCos, get;
+		private static readonly float[] getSin, getCos;
 
         static FloatMath()
         {

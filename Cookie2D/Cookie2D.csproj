@@ -76,9 +76,6 @@
     <Compile Include="World\Entity\Player.cs" />
     <Compile Include="World\Managers\PlayerManager.cs" />
     <Compile Include="World\Entity\IEntity.cs" />
-    <Compile Include="World\Object\TileMap.cs" />
-    <Compile Include="World\Object\IObject.cs" />
-    <Compile Include="World\Managers\MapManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -115,12 +112,5 @@
       <Name>CookieLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="extlibs\" />
-    <Folder Include="Screens\" />
-    <Folder Include="World\" />
-    <Folder Include="World\Entity\" />
-    <Folder Include="World\Managers\" />
-    <Folder Include="World\Object\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

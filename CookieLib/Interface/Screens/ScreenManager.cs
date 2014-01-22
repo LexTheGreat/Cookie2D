@@ -5,7 +5,7 @@ using SFML.Graphics;
 using NetEXT.TimeFunctions;
 using Tao.OpenGl;
 
-namespace CookieLib.Interface
+namespace CookieLib.Interface.Screens
 {
 	public class ScreenManager
 	{
@@ -13,7 +13,7 @@ namespace CookieLib.Interface
 		private RenderWindow _gamewindow = null;
 		private List<ScreenProvider> _screenmanagerstack = new List<ScreenProvider>();
 		private Time _timestep = Time.Zero;
-		private Color _clearcolor = Color.Cyan;
+		private Color _clearcolor = Color.Black;
 		private bool _stoploop = false;
 		#endregion
 
