@@ -5,11 +5,12 @@ using SFML.Graphics;
 using Cookie2D.World;
 using Cookie2D.World.Entity;
 using Cookie2D.World.Managers;
-using CookieLib.Content;
+using CookieLib.Resources;
 using CookieLib.Interface.Screens;
 using CookieLib.Interface.GUI;
 using CookieLib.Tiled;
 using CookieLib.Utils;
+using CookieLib.Graphics;
 
 namespace Cookie2D.Screens
 {
@@ -64,7 +65,7 @@ namespace Cookie2D.Screens
 			btnCredits.SetImage("Content/textures/gui/buttons/credits.png");
 		}
 
-		public override void Draw(RenderTarget Target)
+		public override void Draw(RenderTarget Target,SpriteBatch spriteBatch)
 		{
 			spriteBatch.Begin(RenderStates.Default);
 			spriteBatch.Draw(ContentManager.Load<Texture>("gui/background"), new FloatRect(0, 0, 800, 600), new Color(255, 255, 255));

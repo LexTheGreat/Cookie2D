@@ -23,8 +23,8 @@ namespace CookieLib.Tiled.Renderer
 	public class TmxCanvas
 	{
 		// User-defined (or derived) fields
-		public int tMaxWidth;
-		public int tMaxHeight;
+		public int tMaxWidth = 29;
+		public int tMaxHeight = 19;
 
 		// Canvas size
 		public int pWidth;          // Canvas pixel width
@@ -58,9 +58,12 @@ namespace CookieLib.Tiled.Renderer
 		public Vector2f camera;
 		public Vector2f origin;
 
-		public TmxCanvas(RenderTarget gameInput)
+		public TmxCanvas(RenderTarget gameInput, Vector2i maxsize, Vector2i tileSize)
 		{
 			game = gameInput;
+
+			pTileWidth = tileSize.X;
+			pTileHeight = tileSize.Y;
 			RescaleCanvas();
 		}
 
@@ -68,12 +71,7 @@ namespace CookieLib.Tiled.Renderer
 		{
 			// Screen pixel count
 			var pWindowWidth = game.Size.X;
-			var pWindowHeight = game.Size.Y;            
-
-			// Testing
-			// Define maximum tile width/height
-			tMaxWidth = 30;
-			tMaxHeight = 15;
+			var pWindowHeight = game.Size.Y;
 
 			// Determine the minimum scaling
 			var xScale = (float)pWindowWidth / (pTileWidth * tMaxWidth);

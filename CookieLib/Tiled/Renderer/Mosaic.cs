@@ -43,9 +43,9 @@ namespace CookieLib.Tiled.Renderer
 			tMapHeight = map.Height;
 
 			// Initialize graphics buffers
-			canvas = new TmxCanvas(game);
-			canvas.pTileWidth = mapName.TileWidth;
-			canvas.pTileHeight = mapName.TileHeight;
+			canvas = new TmxCanvas(game, 
+				new Vector2i(tMapWidth /mapName.TileWidth, tMapHeight/mapName.TileHeight), 
+				new Vector2i(mapName.TileWidth, mapName.TileHeight));
 
 			// Load spritesheets
 			spriteSheet = new Dictionary<TmxTileset, Texture>();

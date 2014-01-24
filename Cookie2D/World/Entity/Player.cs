@@ -1,11 +1,12 @@
 using SFML.Graphics;
 using SFML.Window;
-using CookieLib.Content;
+using CookieLib.Resources;
 using Cookie2D.World.Managers;
-
+using CookieLib;
+using NetEXT.TimeFunctions;
 namespace Cookie2D.World.Entity
 {
-	public class Player : IEntity
+	public class Player : GameEntity
 	{
 		public Player (string UniqueIdentifier, Sprite sprite, Text name, Vector2f position) 
 			: base(UniqueIdentifier, sprite, name, position) { }
@@ -38,7 +39,7 @@ namespace Cookie2D.World.Entity
 			return true;
 		}
 
-		public override void Update()
+		public override void Update(Time deltaTime)
 		{
 			Vector2f tempPos;
 			if (Moving)

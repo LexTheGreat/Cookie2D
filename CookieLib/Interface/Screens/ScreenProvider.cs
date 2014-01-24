@@ -7,7 +7,7 @@ using CookieLib.Graphics;
 
 namespace CookieLib.Interface.Screens
 {
-	public abstract class ScreenProvider
+	public abstract class ScreenProvider : IDisposable
 	{
 		#region Variables
 		private Canvas _gamegui = null;
@@ -28,7 +28,7 @@ namespace CookieLib.Interface.Screens
 			}
 		}
 
-		public RenderTarget rndTarget
+		public RenderTarget renderTarget
 		{
 			get
 			{
@@ -71,13 +71,11 @@ namespace CookieLib.Interface.Screens
 			//sets path of gui image file
 			_guipath = GuiImagePath;
 		}
-		public void InitializeGUI(RenderTarget window)
-		{
-			//initializes optimized sprite renderer
-			spriteBatch = new SpriteBatch(window);
 
+		public void LoadInterface()
+		{
 			// create GWEN renderer
-			Gwen.Renderer.SFML gwenRenderer = new Gwen.Renderer.SFML(window);
+			Gwen.Renderer.SFML gwenRenderer = new Gwen.Renderer.SFML(_target);
 
 			// Create GWEN skin
 			//Skin.Simple skin = new Skin.Simple(GwenRenderer);
@@ -97,19 +95,20 @@ namespace CookieLib.Interface.Screens
 
 			// Create GWEN input processor
 			_ginput = new Gwen.Input.SFML();
-			_ginput.Initialize(_gamegui, window);
+			_ginput.Initialize(_gamegui, _target);
 
 			//Initialize console window
 			console = new Windows.Console(_gamegui);
 		}
 
-		public void DisposeGUI()
+		public void Dispose()
 		{
 			_gamegui.Dispose ();
 			_gamegui = null;
 			_ginput = null;
 			console.Dispose();
 			console = null;
+			_target = null;
 		}
 		#endregion
 
@@ -185,7 +184,7 @@ namespace CookieLib.Interface.Screens
 		public virtual void ScreenActivated() { }
 		public virtual void ScreenDeactivated() { }
 		public virtual void Update(Time DeltaTime) { }
-		public abstract void Draw(RenderTarget Target);
+		public abstract void Draw(RenderTarget Target, SpriteBatch spriteBatch);
 		#endregion
 	}
 }

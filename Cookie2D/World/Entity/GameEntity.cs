@@ -1,6 +1,9 @@
 using System;
 using SFML.Graphics;
 using SFML.Window;
+using CookieLib;
+using NetEXT.TimeFunctions;
+using CookieLib.Graphics;
 
 namespace Cookie2D.World.Entity
 {
@@ -15,7 +18,7 @@ namespace Cookie2D.World.Entity
 	/// <summary>
 	/// Can be used for players, NPCs and many more...
 	/// </summary>
-	public abstract class IEntity
+	public abstract class GameEntity : IDrawable, IUpdateable
 	{
 		private string _uid = null;
 		private Sprite _sprite = null;
@@ -67,7 +70,7 @@ namespace Cookie2D.World.Entity
 			set { _dir = value; }
 		}
 
-		public IEntity(string UniqueIdentifier, Sprite sprite, Text name, Vector2f position)
+		public GameEntity(string UniqueIdentifier, Sprite sprite, Text name, Vector2f position)
 		{
 			_uid = UniqueIdentifier;
 			_sprite = new Sprite (sprite);
@@ -75,7 +78,8 @@ namespace Cookie2D.World.Entity
 			_name = new Text (name);
 		}
 
-		public virtual void Update () { }
+		public virtual void Draw (RenderTarget renderWindow) { }
+		public virtual void Update (Time deltaTime) { }
 	}
 }
 

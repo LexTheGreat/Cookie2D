@@ -12,7 +12,7 @@ using System.Linq;
 using SFML.Graphics;
 using SFML.Window;
 
-namespace CookieLib.Content
+namespace CookieLib.Resources
 {
     public static class ContentManager
     {

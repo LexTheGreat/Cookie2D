@@ -1,27 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CookieLib\Interface\Windows\Console.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CookieLib\Tiled\Renderer\Mosaic.cs">
     <Files>
-      <File FileName="CookieLib\Graphics\SpriteBatch.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Interface\Screens\ScreenProvider.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\Screens\Game.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\Screens\Menu.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Tiled\zlib\CRC32.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Tiled\ImageLayer.cs" Line="6" Column="3" />
-      <File FileName="CookieLib\Tiled\Layer.cs" Line="7" Column="1" />
-      <File FileName="CookieLib\Tiled\Map.cs" Line="7" Column="1" />
-      <File FileName="CookieLib\Tiled\ObjectGroup.cs" Line="7" Column="1" />
-      <File FileName="CookieLib\Tiled\TiledCore.cs" Line="10" Column="38" />
-      <File FileName="CookieLib\Tiled\Tileset.cs" Line="18" Column="42" />
-      <File FileName="CookieLib\Tiled\Renderer\Mosaic.cs" Line="6" Column="3" />
-      <File FileName="CookieLib\Tiled\Renderer\Canvas.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\Program.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\World\Managers\MapManager.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Interface\Screens\ScreenManager.cs" Line="1" Column="1" />
-      <File FileName="Cookie2D\World\Managers\PlayerManager.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\Physics\CollisionDetection.cs" Line="1" Column="1" />
-      <File FileName="CookieLib\GameSettings.cs" Line="9" Column="16" />
-      <File FileName="CookieLib\Interface\Windows\Console.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Tiled\Renderer\Canvas.cs" Line="64" Column="4" />
+      <File FileName="CookieLib\Tiled\Renderer\Mosaic.cs" Line="31" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

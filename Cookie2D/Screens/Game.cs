@@ -9,6 +9,7 @@ using Cookie2D.World.Managers;
 using CookieLib.Interface.Screens;
 using CookieLib.Tiled;
 using CookieLib.Tiled.Renderer;
+using CookieLib.Graphics;
 
 namespace Cookie2D.Screens
 {
@@ -21,7 +22,7 @@ namespace Cookie2D.Screens
 		public override void ScreenActivated()
 		{
 			Program.screenmng.Camera.Center = PlayerManager.GetLocalPlayer.Pos;
-			_maprenderer = new TmxMosaic (rndTarget, MapManager.GetLocalMap);
+			_maprenderer = new TmxMosaic (renderTarget, MapManager.GetLocalMap);
 		}
 
 		public override void ScreenDeactivated()
@@ -30,7 +31,7 @@ namespace Cookie2D.Screens
 		}
 
 
-		public override void Draw(RenderTarget Target)
+		public override void Draw(RenderTarget Target, SpriteBatch spriteBatch)
 		{
 			_maprenderer.DrawCanvas (spriteBatch);
 			spriteBatch.Begin(RenderStates.Default);
@@ -41,10 +42,10 @@ namespace Cookie2D.Screens
 				ply.Name.Draw(Target, RenderStates.Default);
 		}
 
-		public override void Update(Time DeltaTime) 
+		public override void Update(Time deltaTime) 
 		{ 
 			foreach (Player ply in PlayerManager.GetPlayers.Values)
-				ply.Update ();
+				ply.Update (deltaTime);
 		}
 
 		protected override void KeyPressed(RenderWindow sender, KeyEventArgs e)

@@ -4,6 +4,7 @@ using SFML.Window;
 using SFML.Graphics;
 using NetEXT.TimeFunctions;
 using Tao.OpenGl;
+using CookieLib.Graphics;
 
 namespace CookieLib.Interface.Screens
 {
@@ -11,6 +12,7 @@ namespace CookieLib.Interface.Screens
 	{
 		#region Variables
 		private RenderWindow _gamewindow = null;
+		protected SpriteBatch _spriteBatch = null;
 		private View _camera = null;
 		private List<ScreenProvider> _screenmanagerstack = new List<ScreenProvider>();
 		private Time _timestep = Time.Zero;
@@ -77,12 +79,13 @@ namespace CookieLib.Interface.Screens
 		{
 			_gamewindow = settings.Create();
 			_camera = _gamewindow.GetView ();
-			InitialScreenManager.InitializeGUI(_gamewindow);
+			_spriteBatch = new SpriteBatch (_gamewindow);
 			_screenmanagerstack.Add(InitialScreenManager);
 			BindWindowEvents();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
-			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = _gamewindow;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].renderTarget = _gamewindow;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].LoadInterface ();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 			_timestep = TimeStep;
 		}
@@ -103,33 +106,31 @@ namespace CookieLib.Interface.Screens
 		private void OnSwitchScreen(ScreenProvider NewScreenManager)
 		{
 			if (_screenmanagerstack.Contains(NewScreenManager)) return;
-			_screenmanagerstack[_screenmanagerstack.Count - 1].DisposeGUI ();
-			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = null;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenDeactivated();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen -= OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen -= OnCloseScreen;
+			_screenmanagerstack[_screenmanagerstack.Count - 1].Dispose();
 			_screenmanagerstack.Add(NewScreenManager);
-			_screenmanagerstack[_screenmanagerstack.Count - 1].InitializeGUI (_gamewindow);
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
-			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = _gamewindow;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].renderTarget = _gamewindow;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].LoadInterface ();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 		}
 		private void OnCloseScreen()
 		{
-			_screenmanagerstack[_screenmanagerstack.Count - 1].DisposeGUI();
-			_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = null;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenDeactivated();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen -= OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen -= OnCloseScreen;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].Dispose ();
 			_screenmanagerstack.RemoveAt(_screenmanagerstack.Count - 1);
 			if (_screenmanagerstack.Count <= 0) _gamewindow.Close();
 			else
 			{
-				_screenmanagerstack[_screenmanagerstack.Count - 1].InitializeGUI (_gamewindow);
 				_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 				_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
-				_screenmanagerstack [_screenmanagerstack.Count - 1].rndTarget = _gamewindow;
+				_screenmanagerstack [_screenmanagerstack.Count - 1].renderTarget = _gamewindow;
+				_screenmanagerstack [_screenmanagerstack.Count - 1].LoadInterface ();
 				_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 			}
 		}
@@ -151,7 +152,7 @@ namespace CookieLib.Interface.Screens
 				}
 				if (_screenmanagerstack.Count >= 1) 
 				{
-					_screenmanagerstack[_screenmanagerstack.Count - 1].Draw(_gamewindow);
+					_screenmanagerstack[_screenmanagerstack.Count - 1].Draw(_gamewindow, _spriteBatch);
 					_screenmanagerstack [_screenmanagerstack.Count - 1].GameGUI.RenderCanvas();
 				}
 				_gamewindow.Display();

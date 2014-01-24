@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CookieLib.Content
+namespace CookieLib.Resources
 {
     public class ContentProvider : IDisposable
     {

@@ -9,7 +9,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace CookieLib.Content
+namespace CookieLib.Resources
 {
     /// <summary>
     /// Provides simple way of loading and saving binary files
