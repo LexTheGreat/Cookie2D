@@ -66,7 +66,7 @@ namespace Cookie2D.World.Entity
 
 				if (CanMove(tempPos)) { 
 					Pos = tempPos; 
-					Program.screenmng.Camera.Center = Pos;
+					
 				}
 				Sprite.Position = Pos;
 				FloatRect NameSize = Name.GetLocalBounds ();

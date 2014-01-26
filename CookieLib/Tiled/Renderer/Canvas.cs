@@ -30,11 +30,10 @@ namespace CookieLib.Tiled.Renderer
 		public int pWidth;          // Canvas pixel width
 		public int pHeight;         // Canvas pixel height
 		public float tileScale;     // Canvas-to-window scale
-
-		// Testing: tHalo = 0 (should be at least 2)
+		
 		public int tWidth;      // # of (full) tiles per width
 		public int tHeight;     // # of (full) tiles per height
-		public int tHalo = 0;   // # of rendered tiles outside viewport
+		public int tHalo = 2;   // # of rendered tiles outside viewport
 
 		// Camera position (focal tile)
 		public int pX;      // Camera X position in pixels
@@ -54,7 +53,7 @@ namespace CookieLib.Tiled.Renderer
 		public int pTileHeight = 32;     // Tile height in pixels
 
 		// Necessary?
-		RenderTarget game;
+		public RenderTarget game;
 		public Vector2f camera;
 		public Vector2f origin;
 
@@ -64,10 +63,38 @@ namespace CookieLib.Tiled.Renderer
 
 			pTileWidth = tileSize.X;
 			pTileHeight = tileSize.Y;
-			RescaleCanvas();
+
+			// Get centre pixel (or left/above centre)
+			var pXc = (pWidth - 1) / 2;
+			var pYc = (pHeight - 1) / 2;
+
+			// Get tile index containing the pixel
+			tX = pXc / pTileWidth;
+			tY = pYc / pTileHeight;
+
+			// Readjust pX, pY to the centre of the tile
+			pX = tX * pTileWidth + pTileWidth / 2;
+			pY = tY * pTileHeight + pTileHeight / 2;
+
+			UpdateViewport ();
 		}
 
-		public void RescaleCanvas()
+		public void UpdateCamera(Vector2f center)
+		{
+			var pXc = (int)center.X +(pWidth) / 2;
+			var pYc = (int)center.Y +(pHeight) / 2;
+			// Get tile index containing the pixel
+			tX = pXc / pTileWidth;
+			tY = pYc / pTileHeight;
+
+			// Readjust pX, pY to the centre of the tile
+			pX = pXc;
+			pY = pYc;
+
+			RescaleCamera ();
+		}
+		
+		private void RescaleCanvas()
 		{
 			// Screen pixel count
 			var pWindowWidth = game.Size.X;
@@ -83,25 +110,10 @@ namespace CookieLib.Tiled.Renderer
 			// Virtual height is prescribed (i.e. window-independent)
 			pHeight = (int)Math.Round(pWindowHeight / tileScale);
 			pWidth = (int)Math.Round(pWindowWidth / tileScale);
+		}
 
-			//----
-			// Testing (Normally pX,pY would be set externally)
-
-			// Get centre pixel (or left/above centre)
-			var pXc = (pWidth - 1) / 2;
-			var pYc = (pHeight - 1) / 2;
-
-			// Get tile index containing the pixel
-			tX = pXc / pTileWidth;
-			tY = pYc / pTileHeight;
-
-			// Readjust pX, pY to the centre of the tile
-			pX = tX * pTileWidth + pTileWidth / 2;
-			pY = tY * pTileHeight + pTileHeight / 2;
-
-//            Console.WriteLine("tX, tWidth: {0}, {1}", tX, tWidth);
-			//--- End Testing
-
+		private void RescaleCamera()
+		{
 			// Visible tile range (tStart <= t < tEnd)
 			tStartX = tX - (tWidth - 1) / 2 - tHalo;
 			tEndX = tX + (tWidth - 1) / 2 + 1 + tHalo;
@@ -112,9 +124,10 @@ namespace CookieLib.Tiled.Renderer
 			origin = camera - new Vector2f((float)(pWidth/2), (float)(pHeight/2));
 		}
 
-		public void UpdateViewport(object sender, EventArgs e)
+		public void UpdateViewport()
 		{
 			RescaleCanvas();
+			RescaleCamera ();
 		}
 	}
 }

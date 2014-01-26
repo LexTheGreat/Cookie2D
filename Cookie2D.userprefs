@@ -1,9 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CookieLib\Tiled\Renderer\Mosaic.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CookieLib\Interface\Screens\ScreenManager.cs">
     <Files>
-      <File FileName="CookieLib\Tiled\Renderer\Canvas.cs" Line="64" Column="4" />
-      <File FileName="CookieLib\Tiled\Renderer\Mosaic.cs" Line="31" Column="57" />
+      <File FileName="CookieLib\Tiled\Renderer\Canvas.cs" Line="52" Column="24" />
+      <File FileName="CookieLib\Tiled\Renderer\Mosaic.cs" Line="32" Column="22" />
+      <File FileName="Cookie2D\Screens\Menu.cs" Line="1" Column="1" />
+      <File FileName="Cookie2D\Screens\Game.cs" Line="44" Column="3" />
+      <File FileName="Cookie2D\World\Entity\Player.cs" Line="69" Column="6" />
+      <File FileName="CookieLib\Interface\Screens\ScreenManager.cs" Line="113" Column="14" />
+      <File FileName="CookieLib\Physics\CollisionDetection.cs" Line="169" Column="4" />
+      <File FileName="CookieLib\Entities\EntityList.cs" Line="1" Column="1" />
+      <File FileName="CookieLib\Interface\Screens\ScreenProvider.cs" Line="60" Column="3" />
+      <File FileName="CookieLib\Interface\GUI\GuiManager.cs" Line="27" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

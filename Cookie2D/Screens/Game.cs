@@ -21,13 +21,13 @@ namespace Cookie2D.Screens
 
 		public override void ScreenActivated()
 		{
-			Program.screenmng.Camera.Center = PlayerManager.GetLocalPlayer.Pos;
+			//Program.screenmng.Camera.Center = PlayerManager.GetLocalPlayer.Pos;
 			_maprenderer = new TmxMosaic (renderTarget, MapManager.GetLocalMap);
 		}
 
 		public override void ScreenDeactivated()
 		{
-			Program.screenmng.Camera.Center = new Vector2f (Program.screenX /2, Program.screenY /2);
+			//Program.screenmng.Camera.Center = new Vector2f (Program.screenX /2, Program.screenY /2);
 		}
 
 
@@ -46,6 +46,7 @@ namespace Cookie2D.Screens
 		{ 
 			foreach (Player ply in PlayerManager.GetPlayers.Values)
 				ply.Update (deltaTime);
+			_maprenderer.canvas.UpdateCamera (PlayerManager.GetLocalPlayer.Pos);
 		}
 
 		protected override void KeyPressed(RenderWindow sender, KeyEventArgs e)

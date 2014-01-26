@@ -26,5 +26,10 @@ namespace CookieLib.Interface.GUI
                 assets.Add(name, (T)obj);
 			return (T)obj;
         }
+
+		public static void Clear()
+		{
+			assets.Clear();
+		}
     }
 }

@@ -4,6 +4,7 @@ using SFML.Graphics;
 using NetEXT.TimeFunctions;
 using Gwen.Control;
 using CookieLib.Graphics;
+using CookieLib;
 
 namespace CookieLib.Interface.Screens
 {
@@ -15,6 +16,7 @@ namespace CookieLib.Interface.Screens
 		private Gwen.Input.SFML _ginput = null;
 		private Vector2i _screensize = new Vector2i(0, 0);
 		private string _guipath = null;
+		private EntityList _entities = null;
 		protected SpriteBatch spriteBatch = null;
 		protected Windows.Console console = null;
 		#endregion
@@ -53,6 +55,18 @@ namespace CookieLib.Interface.Screens
 			get
 			{
 				return _guipath;
+			}
+		}
+
+		public EntityList Entities
+		{
+			get
+			{
+				return _entities;
+			}
+			set
+			{
+				_entities = value;
 			}
 		}
 		#endregion
@@ -112,6 +126,7 @@ namespace CookieLib.Interface.Screens
 		}
 		#endregion
 
+		#region Input bindings
 		public void window_TextEntered(RenderWindow sender, TextEventArgs e)
 		{
 			_ginput.ProcessMessage(e);
@@ -167,6 +182,7 @@ namespace CookieLib.Interface.Screens
 			_ginput.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, false));
 			KeyReleased(sender, e);
 		}
+		#endregion
 
 		#region Functions
 		//Input bindings

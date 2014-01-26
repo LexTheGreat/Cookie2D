@@ -5,6 +5,7 @@ using SFML.Graphics;
 using NetEXT.TimeFunctions;
 using Tao.OpenGl;
 using CookieLib.Graphics;
+using CookieLib.Interface.GUI;
 
 namespace CookieLib.Interface.Screens
 {
@@ -109,11 +110,13 @@ namespace CookieLib.Interface.Screens
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenDeactivated();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen -= OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen -= OnCloseScreen;
+			_screenmanagerstack [_screenmanagerstack.Count - 1].Entities.Dispose ();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].Dispose();
 			_screenmanagerstack.Add(NewScreenManager);
 			_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 			_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
 			_screenmanagerstack [_screenmanagerstack.Count - 1].renderTarget = _gamewindow;
+			GuiManager.Clear ();
 			_screenmanagerstack [_screenmanagerstack.Count - 1].LoadInterface ();
 			_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 		}
@@ -130,6 +133,7 @@ namespace CookieLib.Interface.Screens
 				_screenmanagerstack[_screenmanagerstack.Count - 1].SwitchScreen += OnSwitchScreen;
 				_screenmanagerstack[_screenmanagerstack.Count - 1].CloseScreen += OnCloseScreen;
 				_screenmanagerstack [_screenmanagerstack.Count - 1].renderTarget = _gamewindow;
+				GuiManager.Clear ();
 				_screenmanagerstack [_screenmanagerstack.Count - 1].LoadInterface ();
 				_screenmanagerstack[_screenmanagerstack.Count - 1].ScreenActivated();
 			}
@@ -144,15 +148,17 @@ namespace CookieLib.Interface.Screens
 				_gamewindow.Clear(_clearcolor);
 				// Clear depth buffer
 				Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
-				while (elapsedtime >= TimeStep)
-				{
-					elapsedtime -= TimeStep;
-					_gamewindow.SetView (_camera);
-					_screenmanagerstack[_screenmanagerstack.Count - 1].Update(TimeStep);
-				}
 				if (_screenmanagerstack.Count >= 1) 
 				{
+					while (elapsedtime >= TimeStep)
+					{
+						elapsedtime -= TimeStep;
+						_gamewindow.SetView (_camera);
+						_screenmanagerstack[_screenmanagerstack.Count - 1].Update(TimeStep);
+						_screenmanagerstack [_screenmanagerstack.Count - 1].Entities.Update (TimeStep);
+					}
 					_screenmanagerstack[_screenmanagerstack.Count - 1].Draw(_gamewindow, _spriteBatch);
+					_screenmanagerstack [_screenmanagerstack.Count - 1].Entities.Draw(_gamewindow);
 					_screenmanagerstack [_screenmanagerstack.Count - 1].GameGUI.RenderCanvas();
 				}
 				_gamewindow.Display();
