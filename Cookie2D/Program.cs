@@ -16,7 +16,7 @@ namespace Cookie2D
     {
         public const int screenX = 800;
         public const int screenY = 600;
-		public static ScreenManager screenmng;
+		public static ScreenManager screenManager;
 
         /// <summary>
         /// The main entry point for the application.
@@ -33,12 +33,12 @@ namespace Cookie2D
             _gameSettings.Style = Styles.Close;
 
 			
-			screenmng = new ScreenManager (
+			screenManager = new ScreenManager (
 				_gameSettings,
 				new MenuScreen(new Vector2i(screenX, screenY),
 					 "Content/textures/GUI/DefaultSkin.png"), 
 				Time.FromMilliseconds(20));
-			screenmng.RunLoop();
+			screenManager.RunLoop();
         } 
     }
 }

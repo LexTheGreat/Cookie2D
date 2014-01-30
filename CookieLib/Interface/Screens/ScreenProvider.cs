@@ -1,10 +1,17 @@
+/* File Description
+ * Original Works/Author: zsbzsb
+ * Other Contributors: Thomas Slusny
+ * Author Website: 
+ * License: MIT
+*/
+
 using System;
+using CookieLib.Graphics;
+using CookieLib;
 using SFML.Window;
 using SFML.Graphics;
 using NetEXT.TimeFunctions;
 using Gwen.Control;
-using CookieLib.Graphics;
-using CookieLib;
 
 namespace CookieLib.Interface.Screens
 {
@@ -17,57 +24,40 @@ namespace CookieLib.Interface.Screens
 		private Vector2i _screensize = new Vector2i(0, 0);
 		private string _guipath = null;
 		private EntityList _entities = null;
+		private Windows.Console _console = null;
 		protected SpriteBatch spriteBatch = null;
-		protected Windows.Console console = null;
 		#endregion
 
 		#region Properties
+		public Windows.Console Console
+		{
+			get { return _console; }
+		}
+
 		public Canvas GameGUI
 		{
-			get
-			{
-				return _gamegui;
-			}
+			get { return _gamegui; }
 		}
 
 		public RenderTarget renderTarget
 		{
-			get
-			{
-				return _target;
-			}
-			set
-			{
-				_target = value;
-			}
+			get { return _target; }
+			set { _target = value; }
 		}
 
 		public Vector2i ScreenSize
 		{
-			get
-			{
-				return _screensize;
-			}
+			get { return _screensize; }
 		}
 
 		public string GuiImagePath
 		{
-			get
-			{
-				return _guipath;
-			}
+			get { return _guipath; }
 		}
 
 		public EntityList Entities
 		{
-			get
-			{
-				return _entities;
-			}
-			set
-			{
-				_entities = value;
-			}
+			get { return _entities; }
 		}
 		#endregion
 
@@ -84,6 +74,9 @@ namespace CookieLib.Interface.Screens
 
 			//sets path of gui image file
 			_guipath = GuiImagePath;
+
+			//initializes entity list
+			_entities = new EntityList ();
 		}
 
 		public void LoadInterface()
@@ -112,7 +105,7 @@ namespace CookieLib.Interface.Screens
 			_ginput.Initialize(_gamegui, _target);
 
 			//Initialize console window
-			console = new Windows.Console(_gamegui);
+			_console = new Windows.Console(_gamegui);
 		}
 
 		public void Dispose()
@@ -120,8 +113,8 @@ namespace CookieLib.Interface.Screens
 			_gamegui.Dispose ();
 			_gamegui = null;
 			_ginput = null;
-			console.Dispose();
-			console = null;
+			_console.Dispose();
+			_console = null;
 			_target = null;
 		}
 		#endregion
@@ -159,19 +152,19 @@ namespace CookieLib.Interface.Screens
 		{
 			_ginput.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, true));
 			if (e.Code == Keyboard.Key.LControl)
-				console.IsHidden = !console.IsHidden;
+				_console.IsHidden = !_console.IsHidden;
 			if (e.Code == Keyboard.Key.F12)
 			{
 				Image img = sender.Capture();
 				if (img.Pixels == null)
 				{
-					console.PrintText("Failed to capture window");
+					_console.PrintText("Failed to capture window");
 				}
 				string path = String.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
 					DateTime.Now.Second);
-				console.PrintText(path + " saved!");
+				_console.PrintText(path + " saved!");
 				if (!img.SaveToFile(path))
-					console.PrintText("Failed to save screenshot");
+					_console.PrintText("Failed to save screenshot");
 				img.Dispose();
 			}
 			KeyPressed(sender,e);
@@ -200,7 +193,8 @@ namespace CookieLib.Interface.Screens
 		public virtual void ScreenActivated() { }
 		public virtual void ScreenDeactivated() { }
 		public virtual void Update(Time DeltaTime) { }
-		public abstract void Draw(RenderTarget Target, SpriteBatch spriteBatch);
+		public virtual void Draw(RenderTarget renderTarget) { }
+		public virtual void Draw(RenderTarget renderTarget, SpriteBatch spriteBatch) { }
 		#endregion
 	}
 }

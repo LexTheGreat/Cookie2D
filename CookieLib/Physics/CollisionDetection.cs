@@ -1,7 +1,7 @@
 /* File Description
- * Original Works/Author: Thomas Slusny
- * Other Contributors: None
- * Author Website: http://indiearmory.com
+ * Original Works/Author: eXpl0it3r
+ * Other Contributors: Thomas Slusny
+ * Author Website: http://sfml-dev.org
  * License: MIT
 */
 

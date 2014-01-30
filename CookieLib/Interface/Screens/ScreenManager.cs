@@ -1,11 +1,18 @@
+/* File Description
+ * Original Works/Author: zsbzsb
+ * Other Contributors: Thomas Slusny
+ * Author Website: 
+ * License: MIT
+*/
+
 using System;
 using System.Collections.Generic;
+using CookieLib.Graphics;
+using CookieLib.Interface.GUI;
 using SFML.Window;
 using SFML.Graphics;
 using NetEXT.TimeFunctions;
 using Tao.OpenGl;
-using CookieLib.Graphics;
-using CookieLib.Interface.GUI;
 
 namespace CookieLib.Interface.Screens
 {
@@ -13,7 +20,7 @@ namespace CookieLib.Interface.Screens
 	{
 		#region Variables
 		private RenderWindow _gamewindow = null;
-		protected SpriteBatch _spriteBatch = null;
+		private SpriteBatch _spriteBatch = null;
 		private View _camera = null;
 		private List<ScreenProvider> _screenmanagerstack = new List<ScreenProvider>();
 		private Time _timestep = Time.Zero;
@@ -22,56 +29,34 @@ namespace CookieLib.Interface.Screens
 		#endregion
 
 		#region Properties
+		public ScreenProvider GetCurrentScreen
+		{
+			get { return _screenmanagerstack[_screenmanagerstack.Count - 1]; }
+		}
+
 		public RenderWindow GameWindow
 		{
-			get
-			{
-				return _gamewindow;
-			}
+			get { return _gamewindow; }
 		}
 		public View Camera
 		{
-			get
-			{
-				return _camera;
-			}
-			set
-			{
-				_camera = value;
-			}
+			get { return _camera; }
+			set { _camera = value; }
 		}
 		public Time TimeStep
 		{
-			get
-			{
-				return _timestep;
-			}
-			set
-			{
-				_timestep = value;
-			}
+			get { return _timestep; }
+			set { _timestep = value; }
 		}
 		public Color ClearColor
 		{
-			get
-			{
-				return _clearcolor;
-			}
-			set
-			{
-				_clearcolor = value;
-			}
+			get { return _clearcolor; }
+			set { _clearcolor = value; }
 		}
 		public bool StopLoop
 		{
-			get
-			{
-				return _stoploop;
-			}
-			set
-			{
-				_stoploop = value;
-			}
+			get { return _stoploop; }
+			set { _stoploop = value; }
 		}
 		#endregion
 

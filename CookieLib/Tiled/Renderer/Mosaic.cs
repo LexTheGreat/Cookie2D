@@ -1,6 +1,6 @@
 /* File Description
  * Original Works/Author: Thomas Slusny
- * Other Contributors: None
+ * Other Contributors: Marshall Ward
  * Author Website: http://indiearmory.com
  * License: MIT
 */
@@ -108,7 +108,7 @@ namespace CookieLib.Tiled.Renderer
 			var jEnd = Math.Min(tMapHeight, canvas.tEndY);
 
 			// Initialize the renderTarget spriteBatch
-			batch.Begin(RenderStates.Default);
+			batch.Begin();
 			// Draw tiles inside canvas
 			foreach (var idMap in layerID)
 			{
@@ -125,9 +125,8 @@ namespace CookieLib.Tiled.Renderer
 						var position = new Vector2f(
 							map.TileWidth * canvas.tileScale * i,
 							map.TileHeight * canvas.tileScale * j);
+						batch.Draw(spriteSheet[idSheet[id]], position, tileRect[id], Color.White, 0.0f, canvas.origin, new Vector2f(canvas.tileScale ,canvas.tileScale));
 
-						batch.Draw(spriteSheet[idSheet[id]], position,
-							tileRect[id], Color.White, new Vector2f(canvas.tileScale ,canvas.tileScale), canvas.origin);
 					}
 				}
 			}

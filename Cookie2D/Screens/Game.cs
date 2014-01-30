@@ -31,15 +31,16 @@ namespace Cookie2D.Screens
 		}
 
 
-		public override void Draw(RenderTarget Target, SpriteBatch spriteBatch)
+		public override void Draw(RenderTarget renderTarget, SpriteBatch spriteBatch)
 		{
 			_maprenderer.DrawCanvas (spriteBatch);
-			spriteBatch.Begin(RenderStates.Default);
-				foreach (Player ply in PlayerManager.GetPlayers.Values)
-				spriteBatch.Draw(ply.Sprite);
-			spriteBatch.End();
+			spriteBatch.Begin();
 			foreach (Player ply in PlayerManager.GetPlayers.Values)
-				ply.Name.Draw(Target, RenderStates.Default);
+			{
+				spriteBatch.Draw(ply.Sprite);
+				spriteBatch.Draw(ply.Name);
+			}
+			spriteBatch.End();
 		}
 
 		public override void Update(Time deltaTime) 

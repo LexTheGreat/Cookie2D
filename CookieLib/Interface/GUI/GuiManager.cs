@@ -1,4 +1,11 @@
-﻿using System;
+﻿/* File Description
+ * Original Works/Author: Thomas Slusny
+ * Other Contributors: None
+ * Author Website: http://indiearmory.com
+ * License: MIT
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

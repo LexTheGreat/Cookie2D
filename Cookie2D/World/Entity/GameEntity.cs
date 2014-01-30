@@ -30,26 +30,14 @@ namespace Cookie2D.World.Entity
 
 		public string UniqueIdentifier
 		{
-			get
-			{
-				return _uid;
-			}
-			set
-			{
-				_uid = value;
-			}
+			get { return _uid; }
+			set { _uid = value; }
 		}
 
 		public Text Name
 		{
-			get
-			{
-				return _name;
-			}
-			set
-			{
-				_name = value;
-			}
+			get { return _name; }
+			set { _name = value; }
 		}
 
 		public Sprite Sprite
@@ -78,7 +66,7 @@ namespace Cookie2D.World.Entity
 			_name = new Text (name);
 		}
 
-		public virtual void Draw (RenderTarget renderWindow) { }
+		public virtual void Draw (RenderTarget renderTarget) { }
 		public virtual void Update (Time deltaTime) { }
 	}
 }

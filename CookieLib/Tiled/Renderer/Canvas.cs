@@ -1,6 +1,6 @@
 /* File Description
  * Original Works/Author: Thomas Slusny
- * Other Contributors: None
+ * Other Contributors: Marshall Ward
  * Author Website: http://indiearmory.com
  * License: MIT
 */

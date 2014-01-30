@@ -1,8 +1,8 @@
 ﻿/* File Description
- * Original Works/Author: Thomas Slusny
- * Other Contributors: None
- * Author Website: http://indiearmory.com
- * License: MIT
+ * Original Works/Author: krzat
+ * Other Contributors: Thomas Slusny
+ * Author Website: https://bitbucket.org/krzat/sfml.utils
+ * License: GPL 3.0
 */
 
 using SFML.Graphics;

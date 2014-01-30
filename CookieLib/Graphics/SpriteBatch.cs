@@ -1,233 +1,306 @@
-﻿﻿/* File Description
- * Original Works/Author: krzat
- * Other Contributors: Thomas Slusny
- * Author Website: https://bitbucket.org/krzat/sfml.utils
- * License: GPL 3.0
+/* File Description
+ * Original Works/Author: Thomas Slusny
+ * Other Contributors: None
+ * Author Website: http://indiearmory.com
+ * License: MIT
 */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
 using SFML.Graphics;
 using SFML.Window;
-
+using CookieLib.Utils;
 
 namespace CookieLib.Graphics
 {
-    /// <summary>
-    /// Provides optimized drawing of sprites
-    /// </summary>
-    public class SpriteBatch
-    {
-        private struct QueueItem
-        {
-            public uint Count;
-            public Texture Texture;
-        }
+	/// <summary>
+	/// An implementation of SpriteBatch using the RenderWindow.
+	/// Warning: this spritebatch do not provides optimized drawing of sprites.
+	/// It just provides most of functionality of XNA spritebatch.
+	/// For optimized spritebatch with less functionality, use VertexBatch.
+	/// </summary>
+	public class SpriteBatch
+	{
+		private Sprite _sprite = new Sprite();
+		private Text _str = new Text();
+		private View _view = new View();
+		private RenderStates _renderState = RenderStates.Default;
 
-        private List<QueueItem> textures = new List<QueueItem>();
-		private RenderTarget target;
-		private RenderStates blend;
-        private readonly int Max;
+		private bool _isDisposed;
+		private bool _isStarted;
+		private RenderTarget _rt;
 
-        public int Count
-        {
-            get { return count; }
-        }
+		#region Helpers
 
-		public SpriteBatch(RenderTarget graphicsDevice, int maxCapacity = 100000)
-        {
-            Max = maxCapacity * 4;
-			target = graphicsDevice;
-        }
+		protected static bool IsAssetValid(Texture asset)
+		{
+			if (asset == null) return false;
+			return true;
+		}
+		
+		protected static bool IsAssetValid(Font asset)
+		{
+			if (asset == null) return false;
+			return true;
+		}
 
-        private Vertex[] vertices = new Vertex[100 * 4];
-        private int count;
-        private Texture activeTexture;
-        private bool active;
-        private uint queueCount;
+		protected static Vector2f GetScaleEffectMultiplier(SpriteEffects effects)
+		{
+			return new Vector2f(
+				((effects & SpriteEffects.FlipHorizontally) != 0) ? -1 : 1,
+				((effects & SpriteEffects.FlipVertically) != 0) ? -1 : 1
+			);
+		}
 
-		public void Begin(RenderStates BlendState)
-        {
-            if (active) throw new Exception("Already active");
-            count = 0;
-            textures.Clear();
-			blend = BlendState;
-            active = true;
-            activeTexture = null;
-        }
+		#endregion
 
-        public void End()
-        {
-            if (!active) throw new Exception("Call end first.");
-            Enqueue();
-            active = false;
+		#region Variables
 
-			uint index = 0;
-			foreach (var item in textures)
+		public BlendMode BlendMode
+		{
+			get { return _renderState.BlendMode; }
+			set { _renderState.BlendMode = value; }
+		}
+		
+		public bool IsDisposed
+		{
+			get { return _isDisposed; }
+		}
+		
+		public bool IsStarted
+		{
+			get { return _isStarted; }
+		}
+
+		public RenderTarget RenderTarget
+		{
+			get { return _rt; }
+			set { _rt = value; }
+		}
+
+		#endregion
+
+		#region Constructors
+
+		public SpriteBatch(RenderTarget renderTarget)
+		{
+			_rt = renderTarget;
+		}
+
+		public SpriteBatch() { }
+
+		#endregion
+
+		#region General functions
+
+		public void Begin(BlendMode blendMode, Vector2f position, Vector2f size, float rotation)
+		{
+			_view.Reset(new FloatRect(position.X, position.Y, size.X, size.Y));
+			_view.Rotate(rotation);
+			_rt.SetView(_view);
+
+			_renderState.BlendMode = blendMode;
+
+			_isStarted = true;
+		}
+		
+		public void Begin(BlendMode blendMode)
+		{
+			Begin (blendMode, new Vector2f (0f, 0f), new Vector2f(_rt.Size.X, _rt.Size.Y), 0f);
+		}
+		
+		public void Begin()
+		{
+			Begin(BlendMode.Alpha);
+		}
+		
+		public void Dispose()
+		{
+			_isDisposed = true;
+		}
+
+		public void End()
+		{
+			_isStarted = false;
+		}
+
+		public void Draw(Drawable drawable, Shader shader = null)
+		{
+			if (drawable == null)
+				return;
+
+			_renderState.Shader = shader;
+			_rt.Draw(drawable, _renderState);
+		}
+
+		#endregion
+
+		#region Sprites
+
+		public void Draw(Sprite sprite, Shader shader = null)
+		{
+			if (sprite == null || !IsAssetValid(sprite.Texture))
+				return;
+
+			_renderState.Shader = shader;
+			_rt.Draw(sprite, _renderState);
+		}
+		
+		public void Draw(Texture texture, IntRect destinationRectangle, IntRect? sourceRectangle, Color color,
+			float rotation, Vector2f origin, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
+		{
+			if (!IsAssetValid(texture))
+				return;
+
+			if (sourceRectangle.HasValue)
 			{
-				Debug.Assert(item.Count > 0);
-				blend.Texture = item.Texture;
-
-				target.Draw(vertices, index, item.Count, PrimitiveType.Quads, blend);
-				index += item.Count;
+				_sprite.TextureRect = sourceRectangle.Value;
 			}
-        }
+			else
+			{
+				_sprite.TextureRect = new IntRect(0, 0, (int)texture.Size.X, (int)texture.Size.Y);
+			}
 
-        private void Enqueue()
-        {
-            if (queueCount > 0)
-                textures.Add(new QueueItem
-                {
-                    Texture = activeTexture,
-                    Count = queueCount
-                });
-            queueCount = 0;
-        }
+			var spriteTextureRect = _sprite.TextureRect;
 
-        private int Create(Texture texture)
-        {
-            if (!active) throw new Exception("Call Begin first.");
+			_sprite.Texture = texture;
+			_sprite.Position = new Vector2f(destinationRectangle.Left, destinationRectangle.Top);
+			_sprite.Color = color;
+			_sprite.Rotation = FloatMath.ToDegrees(rotation);
+			_sprite.Origin = origin;
+			_sprite.Scale = new Vector2f(
+				(destinationRectangle.Width / spriteTextureRect.Width)
+				* GetScaleEffectMultiplier(effects).X,
+				(destinationRectangle.Height / spriteTextureRect.Height)
+				* GetScaleEffectMultiplier(effects).Y);
 
-            if (texture != activeTexture)
-            {
-                Enqueue();
-                activeTexture = texture;
-            }
+			_renderState.Shader = shader;
+			_rt.Draw(_sprite, _renderState);
+		}
 
-            if (count >= (vertices.Length / 4))
-            {
-                if (vertices.Length < Max)
-                    Array.Resize(ref vertices, Math.Min(vertices.Length * 2, Max));
-                else throw new Exception("Too many items");
-            }
+		public void Draw(Texture texture, IntRect destinationRectangle, IntRect? sourceRectangle, Color color, Shader shader = null)
+		{
+			Draw(texture, destinationRectangle, sourceRectangle, color, 0f, new Vector2f(), SpriteEffects.None, shader);
+		}
 
-            queueCount += 4;
-            return 4 * count++;
-        }
+		public void Draw(Texture texture, IntRect destinationRectangle, Color color, Shader shader = null)
+		{
+			Draw(texture, destinationRectangle, null, color, 0f, new Vector2f(), SpriteEffects.None, shader);
+		}
+		public void Draw(Texture texture, Vector2f position, IntRect? sourceRectangle, Color color, float rotation,
+			Vector2f origin, Vector2f scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
+		{
+			if (!IsAssetValid(texture))
+				return;
 
-        public void Draw(IEnumerable<Sprite> sprites)
-        {
-            foreach (var s in sprites)
-                Draw(s);
-        }
+			if (sourceRectangle.HasValue)
+			{
+				_sprite.TextureRect = (IntRect)sourceRectangle.Value;
+			}
+			else
+			{
+				_sprite.TextureRect = new IntRect(0, 0, (int)texture.Size.X, (int)texture.Size.Y);
+			}
 
-        public void Draw(Sprite sprite)
-        {
-            Draw(sprite.Texture, sprite.Position, sprite.TextureRect, sprite.Color, sprite.Scale, sprite.Origin,
-                 sprite.Rotation);
-        }
+			_sprite.Texture = texture;
+			_sprite.Position = position;
+			_sprite.Color = color;
+			_sprite.Rotation = FloatMath.ToDegrees(rotation);
+			_sprite.Origin = origin;
+			_sprite.Scale = new Vector2f (
+				scale.X * GetScaleEffectMultiplier (effects).X,
+				scale.Y * GetScaleEffectMultiplier (effects).Y);
 
-        public unsafe void Draw(Texture texture, Vector2f position, IntRect rec, Color color, Vector2f scale,
-                                Vector2f origin, float rotation = 0)
-        {
+			_renderState.Shader = shader;
 
-            var index = Create(texture);
-            float sin=0, cos=1;
-            //FloatMath.SinCos(rotation, out sin, out cos);
+			_rt.Draw(_sprite, _renderState);
+		}
 
-            if (true)
-            {
-                rotation = CookieLib.Utils.FloatMath.ToRadians(rotation);
-                sin = (float)Math.Sin(rotation);
-                cos = (float)Math.Cos(rotation);
-            }
+		public void Draw(Texture texture, Vector2f position, IntRect? sourceRectangle, Color color, float rotation,
+			Vector2f origin, float scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
+		{
+			Draw(texture, position, sourceRectangle, color, rotation, origin, new Vector2f(scale, scale), effects, shader);
+		}
 
-            var pX = -origin.X * scale.X;
-            var pY = -origin.Y * scale.Y;
-            scale.X *= rec.Width;
-            scale.Y *= rec.Height;
+		public void Draw(Texture texture, Vector2f position, IntRect? sourceRectangle, Color color, Shader shader = null)
+		{
+			Draw(texture, position, sourceRectangle, color, 0, new Vector2f(), 1.0f, SpriteEffects.None, shader);
+		}
+		
+		public void Draw(Texture texture, Vector2f position, Color color, Shader shader = null)
+		{
+			Draw(texture, position, null, color, 0, new Vector2f(), 1.0f, SpriteEffects.None, shader);
+		}
 
-            fixed (Vertex* fptr = vertices)
-            {
-                var ptr = fptr + index;
+		#endregion
 
-                ptr->Position.X = pX * cos - pY * sin + position.X;
-                ptr->Position.Y = pX * sin + pY * cos + position.Y;
-                ptr->TexCoords.X = rec.Left;
-                ptr->TexCoords.Y = rec.Top;
-                ptr->Color = color;
-                ptr++;
+		#region Text
 
-                pX += scale.X;
-                ptr->Position.X = pX * cos - pY * sin + position.X;
-                ptr->Position.Y = pX * sin + pY * cos + position.Y;
-                ptr->TexCoords.X = rec.Left + rec.Width;
-                ptr->TexCoords.Y = rec.Top;
-                ptr->Color = color;
-                ptr++;
+		public void DrawString(Font font, StringBuilder text, Vector2f position, Color color, float rotation,
+			Vector2f origin, Vector2f scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
+		{
+			if (!IsAssetValid(font))
+				return;
 
-                pY += scale.Y;
-                ptr->Position.X = pX * cos - pY * sin + position.X;
-                ptr->Position.Y = pX * sin + pY * cos + position.Y;
-                ptr->TexCoords.X = rec.Left + rec.Width;
-                ptr->TexCoords.Y = rec.Top + rec.Height;
-                ptr->Color = color;
-                ptr++;
+			DrawString(font, text.ToString(), position, color, rotation, origin, scale, style, shader);
+		}
 
-                pX -= scale.X;
-                ptr->Position.X = pX * cos - pY * sin + position.X;
-                ptr->Position.Y = pX * sin + pY * cos + position.Y;
-                ptr->TexCoords.X = rec.Left;
-                ptr->TexCoords.Y = rec.Top + rec.Height;
-                ptr->Color = color;
-            }
-        }
+		public void DrawString(Font font, string text, Vector2f position, Color color, float rotation, Vector2f origin,
+			Vector2f scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
+		{
+			if (!IsAssetValid(font) || string.IsNullOrEmpty(text))
+				return;
 
-        public unsafe void Draw(Texture texture, FloatRect rec, IntRect src, Color color)
-        {
-            var index = Create(texture);
+			_str.Font = font;
+			_str.DisplayedString = text;
+			_str.Position = position;
+			_str.Color = color;
+			_str.Rotation = rotation;
+			_str.Origin = origin;
+			_str.Scale = scale;
+			_str.Style = style;
+			_str.CharacterSize = 12;
 
-            fixed (Vertex* fptr = vertices)
-            {
-                var ptr = fptr + index;
+			_renderState.Shader = shader;
 
-                ptr->Position.X = rec.Left;
-                ptr->Position.Y = rec.Top;
-                ptr->TexCoords.X = src.Left;
-                ptr->TexCoords.Y = src.Top;
-                ptr->Color = color;
-                ptr++;
+			_rt.Draw(_str, _renderState);
+		}
 
-                ptr->Position.X = rec.Left + rec.Width;
-                ptr->Position.Y = rec.Top;
-                ptr->TexCoords.X = src.Left + src.Width;
-                ptr->TexCoords.Y = src.Top;
-                ptr->Color = color;
-                ptr++;
+		public void DrawString(Font font, StringBuilder text, Vector2f position, Color color, float rotation,
+			Vector2f origin, float scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
+		{
+			if (!IsAssetValid(font))
+				return;
 
-                ptr->Position.X = rec.Left + rec.Width;
-                ptr->Position.Y = rec.Top + rec.Height;
-                ptr->TexCoords.X = src.Left + src.Width;
-                ptr->TexCoords.Y = src.Top + src.Height;
-                ptr->Color = color;
-                ptr++;
+			DrawString(font, text.ToString(), position, color, rotation, origin, new Vector2f(scale, scale), style, shader);
+		}
 
-                ptr->Position.X = rec.Left;
-                ptr->Position.Y = rec.Top + rec.Height;
-                ptr->TexCoords.X = src.Left;
-                ptr->TexCoords.Y = src.Top + src.Height;
-                ptr->Color = color;
-            }
-        }
+		public void DrawString(Font font, string text, Vector2f position, Color color, float rotation, Vector2f origin,
+			float scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
+		{
+			if (!IsAssetValid(font))
+				return;
 
-        public void Draw(Texture texture, FloatRect rec, Color color)
-        {
-            int width = 1, height = 1;
-            if (texture != null)
-            {
-                width = (int)texture.Size.X;
-                height = (int)texture.Size.Y;
-            }
-			Draw(texture, rec, new IntRect(0, 0, width, height), color);
-        }
+			DrawString(font, text, position, color, rotation, origin, new Vector2f(scale,scale), style, shader);
+		}
+		
+		public void DrawString(Font font, StringBuilder text, Vector2f position, Color color)
+		{
+			if (!IsAssetValid(font))
+				return;
 
-        public void Draw(Texture texture, Vector2f pos, Color color)
-        {
-            if (texture == null) throw new ArgumentNullException();
-            var width = (int)texture.Size.X;
-            var height = (int)texture.Size.Y;
-            Draw(texture, new FloatRect(pos.X, pos.Y, width, height), new IntRect(0, 0, width, height), color);
-        }
-    }
+			DrawString(font, text.ToString(), position, color, 0.0f, new Vector2f(), 1.0f);
+		}
+		
+		public void DrawString(Font font, string text, Vector2f position, Color color)
+		{
+			if (!IsAssetValid(font))
+				return;
+
+			DrawString(font, text, position, color, 0.0f, new Vector2f(), 1.0f);
+		}
+
+		#endregion
+	}
 }

@@ -65,11 +65,11 @@ namespace Cookie2D.Screens
 			btnCredits.SetImage("Content/textures/gui/buttons/credits.png");
 		}
 
-		public override void Draw(RenderTarget Target,SpriteBatch spriteBatch)
+		public override void Draw(RenderTarget renderTarget,SpriteBatch spriteBatch)
 		{
-			spriteBatch.Begin(RenderStates.Default);
-			spriteBatch.Draw(ContentManager.Load<Texture>("gui/background"), new FloatRect(0, 0, 800, 600), new Color(255, 255, 255));
-			spriteBatch.Draw(ContentManager.Load<Texture>("gui/overlay"), new FloatRect(0, 0, 800, 600), new Color(255, 255, 255));
+			spriteBatch.Begin();
+			spriteBatch.Draw(ContentManager.Load<Texture>("gui/background"), new IntRect(0, 0, 800, 600), new Color(255, 255, 255));
+			spriteBatch.Draw(ContentManager.Load<Texture>("gui/overlay"), new IntRect(0, 0, 800, 600), new Color(255, 255, 255));
 			spriteBatch.Draw(ContentManager.Load<Texture>("gui/logo"), new Vector2f(160, 200), new Color(255, 255, 255));
 			spriteBatch.End();
 		}

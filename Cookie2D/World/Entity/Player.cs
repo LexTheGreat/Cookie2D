@@ -36,6 +36,10 @@ namespace Cookie2D.World.Entity
 			if (temppos.Y < 0) return false;
 			if (temppos.X > (MapManager.GetLocalMap.Width - 1) * MapManager.GetLocalMap.TileWidth) return false;
 			if (temppos.Y > (MapManager.GetLocalMap.Height -1) * MapManager.GetLocalMap.TileHeight) return false;
+			Program.screenManager.GetCurrentScreen.Console.PrintText("Max map width" + MapManager.GetLocalMap.TileWidth);
+			Program.screenManager.GetCurrentScreen.Console.PrintText("Max map height" + MapManager.GetLocalMap.TileHeight);
+			Program.screenManager.GetCurrentScreen.Console.PrintText("Player X" + temppos.X);
+				Program.screenManager.GetCurrentScreen.Console.PrintText("Player Y" + temppos.Y);
 			return true;
 		}
 
@@ -64,13 +68,13 @@ namespace Cookie2D.World.Entity
 
 				BoundingBox = new IntRect ((int)tempPos.X, (int)tempPos.Y + 16, 32, 16);
 
-				if (CanMove(tempPos)) { 
+				if (CanMove(tempPos)) 
+				{
 					Pos = tempPos; 
-					
+					Sprite.Position = Pos;
+					FloatRect NameSize = Name.GetLocalBounds ();
+					Name.Position = new Vector2f (Pos.X + Sprite.TextureRect.Width/2 - NameSize.Width / 2, Pos.Y - Sprite.TextureRect.Height/2 - 4);
 				}
-				Sprite.Position = Pos;
-				FloatRect NameSize = Name.GetLocalBounds ();
-				Name.Position = new Vector2f (Pos.X + 16 - NameSize.Width / 2, Pos.Y - 20);
 			}
 		}
 	}
